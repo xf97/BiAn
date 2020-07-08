@@ -19,7 +19,7 @@ class layoutConfuse:
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
 		self.json = self.getJsonContent(_jsonFile)
-		self.RVN = replaceVarName() # RVN is the class that performs "Replace Variable Name" operation
+		self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
 
 	def getContent(self, _filepath):
 		with open(_filepath, "r", encoding = "utf-8") as f:
@@ -38,8 +38,8 @@ class layoutConfuse:
 		jsonDict = json.loads(jsonStr)
 		return jsonDict
 
-	def doReplace(self, _fileContent, _jsonContent):
-		replacedContent = self.RVN.doReplace(_fileContent, _jsonContent)
+	def doReplace(self):
+		replacedContent = self.RVN.doReplace()
 		return replacedContent
 
 
@@ -47,7 +47,7 @@ class layoutConfuse:
 		#print(self.solContent)
 		#print(self.outputFileName)
 		#print(self.json)
-		self.doReplace(self.solContent, self.json)
+		self.doReplace()
 
 
 #unit test
