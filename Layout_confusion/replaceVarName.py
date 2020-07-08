@@ -12,6 +12,9 @@ import json
 import sys
 import re
 
+VAR_FLAG = 1
+IDENTIFIER_FLAG = 2
+
 class replaceVarName:
 	def __init__(self, _solContent, _jsonContent):
 		self.content = _solContent
@@ -21,23 +24,31 @@ class replaceVarName:
 	def getNames(self, _json):
 		#dictList = list()
 		#dictList.append(_json)
-		varName = self._getName(_json, "name", "ElementaryTypeName")
-		idenName = self._getName(_json, "name", "Identifier")
+		varName = self._getName(_json, "name", "ElementaryTypeName", VAR_FLAG)
+		idenName = set(self._getName(_json, "name", "Identifier", IDENTIFIER_FLAG))
 		print(varName)
 		print(idenName)
 
-	def getDictName(self, _dict):
+	def getDictName(self, _dict, _flag):
 		for key in _dict:
 			if key == "attributes":
-				print(_dict["attributes"])
-				'''
+				for _key in _dict[key]:
+					if _flag == VAR_FLAG:
+						if _key == "value" and _dict[key][_key] != None:
+							if _dict[key]["referencedDeclaration"] != None and  _dict[key]["referencedDeclaration"] > 0:
+								#print(_dict[key][_key])
+								return _dict[key][_key]
+					elif _flag == IDENTIFIER_FLAG:
+						if _key == "name":
+							return _dict[key][_key]
+			'''
 				if _dict["attributes"].get("value") != None:
 					print(_dict["value"])
 					return _dict["value"]
-					'''
+			'''
 
 
-	def _getName(self, _json, _key, _value):
+	def _getName(self, _json, _key, _value, _flag):
 		#print(_key)
 		queue = [_json]
 		result = list()
@@ -47,7 +58,7 @@ class replaceVarName:
 			for key in data:
 				#print(key)
 				if key == _key and data[key] == _value:
-					name = self.getDictName(data)
+					name = self.getDictName(data, _flag)
 					result.append(name)
 				elif type(data[key]) == dict:
 					queue.append(data[key])
