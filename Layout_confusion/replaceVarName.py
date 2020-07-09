@@ -32,7 +32,7 @@ class replaceVarName:
 		idenName = set(self._getName(_json, "name", "Identifier", IDENTIFIER_FLAG))
 		funcName = set(self._getName(_json, "name", "FunctionDefinition", FUNC_FLAG))
 		contractName = set(self._getName(_json, "exportedSymbols", "", CONTRACT_FLAG))
-		print(idenName)
+		#print(idenName)
 		return varName | idenName | funcName | contractName
 
 	def getDictName(self, _dict, _flag):
@@ -45,8 +45,8 @@ class replaceVarName:
 			elif key == "attributes" and _flag == IDENTIFIER_FLAG and \
 			     _dict[key].get("referencedDeclaration") != None and \
 			     _dict[key].get("referencedDeclaration") > 0 and \
-			     _dict[key].get("value") != None:
-			     print(_dict[key].get("referencedDeclaration"))
+			     _dict[key].get("value") != None and _dict[key].get("type") != "msg":
+			     #print(_dict[key].get("referencedDeclaration"))
 			     return _dict[key].get("value")
 			elif key == "attributes" and _flag == FUNC_FLAG and \
 			     _dict[key].get("kind") != None and \
