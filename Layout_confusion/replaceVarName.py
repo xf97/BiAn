@@ -11,9 +11,13 @@ import os
 import json
 import sys
 import re
+import hashlib
+import time
 
 VAR_FLAG = 1
 IDENTIFIER_FLAG = 2
+FUNC_FLAG = 3
+CONTRACT_FLAG = 4
 
 class replaceVarName:
 	def __init__(self, _solContent, _jsonContent):
@@ -24,42 +28,50 @@ class replaceVarName:
 	def getNames(self, _json):
 		#dictList = list()
 		#dictList.append(_json)
-		varName = self._getName(_json, "name", "ElementaryTypeName", VAR_FLAG)
+		varName = set(self._getName(_json, "name", "VariableDeclaration", VAR_FLAG))
 		idenName = set(self._getName(_json, "name", "Identifier", IDENTIFIER_FLAG))
-		print(varName)
+		funcName = set(self._getName(_json, "name", "FunctionDefinition", FUNC_FLAG))
+		contractName = set(self._getName(_json, "exportedSymbols", "", CONTRACT_FLAG))
 		print(idenName)
+		return varName | idenName | funcName | contractName
 
 	def getDictName(self, _dict, _flag):
 		for key in _dict:
-			if key == "attributes":
-				for _key in _dict[key]:
-					if _flag == VAR_FLAG:
-						if _key == "value" and _dict[key][_key] != None:
-							if _dict[key]["referencedDeclaration"] != None and  _dict[key]["referencedDeclaration"] > 0:
-								#print(_dict[key][_key])
-								return _dict[key][_key]
-					elif _flag == IDENTIFIER_FLAG:
-						if _key == "name":
-							return _dict[key][_key]
-			'''
-				if _dict["attributes"].get("value") != None:
-					print(_dict["value"])
-					return _dict["value"]
-			'''
-
+			if key == "attributes" and _flag == VAR_FLAG:
+				if len(_dict[key].get("name")) > 0:
+					return _dict[key].get("name")
+				else:
+					continue
+			elif key == "attributes" and _flag == IDENTIFIER_FLAG and \
+			     _dict[key].get("referencedDeclaration") != None and \
+			     _dict[key].get("referencedDeclaration") > 0 and \
+			     _dict[key].get("value") != None:
+			     print(_dict[key].get("referencedDeclaration"))
+			     return _dict[key].get("value")
+			elif key == "attributes" and _flag == FUNC_FLAG and \
+			     _dict[key].get("kind") != None and \
+			     _dict[key].get("kind") == "function" :
+			     return _dict[key].get("name")
+			elif _flag == CONTRACT_FLAG and key == "exportedSymbols":
+				return _dict[key].keys()
 
 	def _getName(self, _json, _key, _value, _flag):
-		#print(_key)
 		queue = [_json]
 		result = list()
 		while len(queue) > 0:
 			data = queue.pop()
 			#print(data)
 			for key in data:
+				if _flag == CONTRACT_FLAG and key == _key:
+					namelist = self.getDictName(data, _flag)
+					result.extend(namelist)
 				#print(key)
-				if key == _key and data[key] == _value:
+				elif key == _key and data[key] == _value:
 					name = self.getDictName(data, _flag)
+					#print(data)
+					#print("****************************")
 					result.append(name)
+					#result.append(data)
 				elif type(data[key]) == dict:
 					queue.append(data[key])
 				elif type(data[key]) == list:
@@ -67,40 +79,46 @@ class replaceVarName:
 						if type(item) == dict:
 							queue.append(item)
 		return result
-		'''
-		print("hahaha")
-		dictList = list()
-		for _dict in _dictList:
-			for key in _dict:
-				print(key)
-				if isinstance(_dict[key], dict):
-					print("lalala")
-					dictList.append(_dict[key])
-				elif key == _key and _dict.get(key) == _value:
-					print(_dict[key])
-		if len(dictList) != 0:
-			self._getName(dictList, _key, _value)
-		for key in _json:
-			if key == "children":
-				newDict =  _json[key][1]
-				for innerKey in newDict:
-					if innerKey == "children":
-						newNewDict = newDict[innerKey][0]
-						print(newNewDict)
-						print("")
-						if newNewDict.get(_key) == _value:
-							print(newNewDict[_key])
-		'''
 
 
 	def doReplace(self):
 		#1. get names of all variables and identifiers
 		nameList = self.getNames(self.json)
-		'''
 		replacedResult = self.content
 		#2. Replace the name of each variable and identifier with a hash value
 		for name in nameList:
-			replacedResult = replace1Name(replacedResult, name)
+			if name != None:
+				replacedResult = self.replace1Name(replacedResult, name)
+		#print(replacedResult)
 		#3. return result
 		return replacedResult
-		'''
+
+	def makeRe(self, _str):
+		return "(\\b)" + _str + "(\\b)"
+
+
+	'''
+	Why do we choose sha1 algorithm? 
+	There are two reasons for this:
+	1. Although the SHA1 algorithm can be cracked, 
+	in our intention, cracking the "variable name" is actually meaningless.
+    2. The output of the SHA1 algorithm is a 160-bit hash value, which is 
+    the same as Solidity's address type and can interfere with some static 
+    code scanning tools.
+	'''
+	def makeHashName(self, _str):
+		sha1 = hashlib.sha1()
+		sha1.update(_str.encode("utf-8") + str(time.time()).encode("utf-8"))
+		res = sha1.hexdigest()
+		return "O0" + res
+
+
+	def replace1Name(self, _content, _name):
+		#1. construct the re expression
+		reExp = self.makeRe(_name)
+		#2. generate the replacement
+		hashName = self.makeHashName(_name)
+		#3. find the name and replace it
+		#temp = _content
+		return re.sub(reExp, hashName, _content)
+

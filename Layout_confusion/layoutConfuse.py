@@ -23,8 +23,8 @@ class layoutConfuse:
 
 	def getContent(self, _filepath):
 		with open(_filepath, "r", encoding = "utf-8") as f:
-			return f.readlines()
-		return list()
+			return f.read()
+		return str()
 
 	def getOutputFileName(self, _filepath):
 		temp = _filepath.split(".")
@@ -42,15 +42,21 @@ class layoutConfuse:
 		replacedContent = self.RVN.doReplace()
 		return replacedContent
 
+	def writeStrToFile(self, _filename, _str):
+		with open(_filename, "w", encoding = "utf-8") as f:
+			f.write(_str)
+		print(_filename, "is writed.")
+
 
 	def run(self):
 		#print(self.solContent)
 		#print(self.outputFileName)
 		#print(self.json)
-		self.doReplace()
+		replacedNameContent = self.doReplace()
+		self.writeStrToFile("testCase/temp.sol", replacedNameContent)
 
 
 #unit test
 if __name__ == "__main__":
-	lc = layoutConfuse("testCase.sol", "1_json.ast")
+	lc = layoutConfuse("testCase/testCase2.sol", "testCase/testCase2_json.ast")
 	lc.run()
