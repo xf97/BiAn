@@ -12,6 +12,7 @@ import os
 import sys
 import json
 from replaceVarName import replaceVarName
+from splitFunction import splitFunction
 
 
 class layoutConfuse:
