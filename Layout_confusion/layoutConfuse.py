@@ -59,7 +59,8 @@ class layoutConfuse:
 		replacedNameContent = self.doReplace()
 		self.writeStrToFile("testCase/temp.sol", replacedNameContent)
 		'''
-		print(self.solContent.find("uint256") + len("uint256"))
+		#print(self.solContent.find("uint256") + len("uint256"))
+		print(self.solContent[376:(376+84)])
 
 
 #unit test
