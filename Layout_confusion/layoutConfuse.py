@@ -48,16 +48,21 @@ class layoutConfuse:
 			f.write(_str)
 		print(_filename, "is writed.")
 
-
+	#first - split contract
+	#second - split function
+	#third - replace name
 	def run(self):
 		#print(self.solContent)
 		#print(self.outputFileName)
 		#print(self.json)
+		'''
 		replacedNameContent = self.doReplace()
 		self.writeStrToFile("testCase/temp.sol", replacedNameContent)
+		'''
+		print(self.solContent.find("uint256") + len("uint256"))
 
 
 #unit test
 if __name__ == "__main__":
-	lc = layoutConfuse("testCase/testCase2.sol", "testCase/testCase2_json.ast")
+	lc = layoutConfuse("testCase/testCase1.sol", "testCase/testCase1_json.ast")
 	lc.run()
