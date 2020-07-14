@@ -4,16 +4,21 @@ pragma solidity 0.6.2;
 
 contract tooManyDigits{
     //In Solidity, scientific counting method is provided to represent big numbers and small numbers, and ether unit is also provided to represent the amount of ether. Trying to write multiple digits in succession with these substitutions, these effectively reduce the chance of making mistakes and make the code easier to understand.
-    uint256 public oncePrice = 1000000000000000000; //10^18 
+    uint256 public oncePrice = 1000000000000000000; //10^18, integer literal
+    address public checkAddress = 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed; //address literal
+    string public symbol;
+    bytes _16jinzhi;
     address[] public users;
     address payable owner;
     
     constructor() public{
+	symbol = "xf's testCase";
+	_16jinzhi = hex"001122ff";
         owner = msg.sender;
     }
     
     function withdraw() external{
-        require(msg.sender == owner);
+        require(msg.sender == owner && tx.origin == checkAddress);
         owner.transfer(address(this).balance);
     }
     
