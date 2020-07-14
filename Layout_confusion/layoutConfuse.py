@@ -39,9 +39,11 @@ class layoutConfuse:
 		jsonDict = json.loads(jsonStr)
 		return jsonDict
 
+	'''
 	def doReplace(self):
 		replacedContent = self.RVN.doReplace()
 		return replacedContent
+	'''
 
 	def writeStrToFile(self, _filename, _str):
 		with open(_filename, "w", encoding = "utf-8") as f:
@@ -56,7 +58,7 @@ class layoutConfuse:
 		#print(self.outputFileName)
 		#print(self.json)
 		'''
-		replacedNameContent = self.doReplace()
+		replacedNameContent = self.RVN.doReplace()
 		self.writeStrToFile("testCase/temp.sol", replacedNameContent)
 		'''
 		#print(self.solContent.find("uint256") + len("uint256"))

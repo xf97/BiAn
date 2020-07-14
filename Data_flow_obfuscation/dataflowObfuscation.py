@@ -43,12 +43,12 @@ class dataflowObfuscation:
 			f.write(_str)
 		print(_filename, "is writed.")
 
-
 	def run(self):
-		pass
+		self.SDDG.doGenerate()
 
 
 #unit test
 if __name__ == "__main__":
 	dfo = dataflowObfuscation("testCase/constant2Variable.sol", "testCase/constant2Variable.sol_json.ast")
-	print(dfo.solContent)
+	#print(dfo.solContent)
+	dfo.run()

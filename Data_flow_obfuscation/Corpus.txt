@@ -1,0 +1,17 @@
+{
+  {"type": "getIntFunction",
+    "functionHeadAndBody": "	function getIntPara(uint256 _para) internal pure returns(uint256){
+					return 	_para;
+				}" 
+  },
+  {"type":"getStrFunction",
+   "functionHeadAndBody": "	function getStringPara(string storage _para) internal pure returns(string storage){
+					return _para;
+				}"
+  },
+  {"type":"getAddrFunction", 
+   "functionHeadAndBody": "	function getAddrPara(address payable _para) internal pure returns(address payable){
+					return _para;				
+				}"
+  }
+}
