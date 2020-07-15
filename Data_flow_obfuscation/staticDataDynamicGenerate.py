@@ -61,18 +61,81 @@ class staticDataDynamicGenerate:
 			else:
 				continue	
 		#2.3 insert variable - array
+		#insertPosition = self.getContractStartOrEnd(START_FLAG)
 		for _type in typeList:
 			if _type == ADDRESS_FLAG:
-				pass
+				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
 			elif _type == STRING_FLAG:
-				pass
+				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
 			elif _type == INT_FLAG:
-				pass
+				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
 			else:
 				continue
-
-
 		print(nowContent)
+
+
+	def insertArrayDeclare(self, _content, _position, _type):
+		intStr = str()
+		for item in self.corpusDict:
+			if item == "insertVariable":
+				for _dict in self.corpusDict[item]:
+					if _type == INT_FLAG and _dict.get("type") == "UintArrayDeclare":
+						intStr = _dict.get("variableDeclaration")
+						intStr += self.getValue(_type)
+					elif  _type == STRING_FLAG and _dict.get("type") == "StringArrayDeclare":
+						intStr = _dict.get("variableDeclaration")
+						intStr += self.getValue(_type)
+					elif  _type == ADDRESS_FLAG and _dict.get("type") == "AddressArrayDeclare":
+						intStr = _dict.get("variableDeclaration")
+						intStr += self.getValue(_type)
+		#print(self.strInsert(_content, intStr, _position))#, _position + len(intStr))
+		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr)
+
+	def getValue(self, _type):
+		typeList = self.findLiteral(self.json, "name", "Literal")
+		valueList = list()
+		for _dict in typeList:
+			try:
+				if _type != INT_FLAG and _type == _dict["attributes"]["type"].split()[0]:
+					valueList.append(_dict["attributes"]["value"])
+				elif _type == INT_FLAG and _type == _dict["attributes"]["type"].split()[0]:
+					valueList.append(_dict["attributes"]["type"].split()[1])
+			except:
+				continue
+		valueList = self.filterList(valueList)
+		intStr = str()
+		if _type == INT_FLAG:
+			for num in valueList:
+				if valueList.index(num) == len(valueList) - 1:
+					intStr += num
+				else:
+					intStr += num
+					intStr += ", "
+			intStr += "];\n"
+		elif _type == ADDRESS_FLAG:
+			for addr in valueList:
+				if valueList.index(addr) == len(valueList) - 1:
+					intStr += addr
+				else:
+					intStr += addr 
+					intStr += ", "
+			intStr += "];\n"
+		elif _type == STRING_FLAG:
+			for string in valueList:
+				if valueList.index(string) == len(valueList) - 1:
+					intStr += "\"" + string + "\""
+				else:
+					intStr += "\"" + string + "\""
+					intStr += ", "
+			intStr += "];\n"
+		return intStr
+
+	def filterList(self, _list):
+		temp = _list
+		for item in temp:
+			if item == None:
+				temp.remove(item)
+		return list(set(temp))
 
 	def getContractStartOrEnd(self, _flag):
 		_list = self.findLiteral(self.json, "name", "ContractDefinition")
@@ -83,7 +146,7 @@ class staticDataDynamicGenerate:
 		if _flag == END_FLAG:
 			return self.listToInt(temp[0].split(":"))
 		elif _flag == START_FLAG:
-			return self.listToInt(temp[0].split(":")[0])
+			return self.listToInt([temp[0].split(":")[0]])
 		'''
 		for item in temp:
 			contractEnd.append(self.listToInt(item.split(":")))
@@ -109,11 +172,11 @@ class staticDataDynamicGenerate:
 					elif  _type == ADDRESS_FLAG and _dict.get("type") == "getAddrFunction":
 						intStr = _dict.get("functionHeadAndBody")
 		#print(self.strInsert(_content, intStr, _position))#, _position + len(intStr))
-		return self.strInsert(_content, intStr, _position), _position + len(intStr)
+		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr)
 
     #Inserting a substr into another str at specific position
 	def strInsert(self, _oldContent, _insertContent, _position):
-		return _oldContent[:_position - 1] + _insertContent + _oldContent[_position - 1:]
+		return _oldContent[:_position] + _insertContent + _oldContent[_position:]
 
 		#self.declareAndInitArray(literalList, self.content, self.json)
 		'''
