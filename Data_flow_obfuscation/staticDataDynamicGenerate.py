@@ -95,22 +95,25 @@ class staticDataDynamicGenerate:
 		temp = str()
 		sliceIndex = list()
 		for item in _list:
-			sliceIndex.append(int(item[1]))
-			sliceIndex.append(int(item[2]))
+			if item[1] == 0 and item[2] == 0:
+				continue
+			else:
+				sliceIndex.append(int(item[1]))
+				sliceIndex.append(int(item[2]))
+
 		sliceIndex = self.filterList(sliceIndex)
 		sliceIndex.sort()	# from small to big
-		print(sliceIndex)
 		flag = 0
 		index = 0
 		while flag < len(sliceIndex):
-			if flag % 2 != 1:
+			if flag % 2 == 0:
 				temp += _oldContent[index : sliceIndex[flag]]
 				index = sliceIndex[flag]
 				flag += 1
 			else:
 				temp += self.getCallStatement(_list, index, sliceIndex[flag])
-				flag += 1
 				index = sliceIndex[flag] 
+				flag += 1
 		return temp
 
 	def getCallStatement(self, _list, _startPos, _endPos):
