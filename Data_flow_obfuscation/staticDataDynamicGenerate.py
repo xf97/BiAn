@@ -81,11 +81,45 @@ class staticDataDynamicGenerate:
 		for _dict in literalList:
 			(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
 			callStatement = self.makeCallStatement(arrayList, _type, value)
-			nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
-		print(nowContent)
+			insertList.append([callStatement, startPos, endPos])
+			#nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
+		nowContent = self.strReplace(nowContent, insertList)
+		return nowContent
 
+	'''
 	def strReplace(self, _oldContent, _insertContent, _startPos, _endPos):
 		return _oldContent[startPos:] + _insertContent + _oldContent[:endPos]
+	'''
+
+	def strReplace(self, _oldContent, _list):
+		temp = str()
+		sliceIndex = list()
+		for item in _list:
+			sliceIndex.append(int(item[1]))
+			sliceIndex.append(int(item[2]))
+		sliceIndex = self.filterList(sliceIndex)
+		sliceIndex.sort()	# from small to big
+		print(sliceIndex)
+		flag = 0
+		index = 0
+		while flag < len(sliceIndex):
+			if flag % 2 != 1:
+				temp += _oldContent[index : sliceIndex[flag]]
+				index = sliceIndex[flag]
+				flag += 1
+			else:
+				temp += self.getCallStatement(_list, index, sliceIndex[flag])
+				flag += 1
+				index = sliceIndex[flag] 
+		return temp
+
+	def getCallStatement(self, _list, _startPos, _endPos):
+		for item in _list:
+			if item[1] == _startPos and item[2] == _endPos:
+				return item[0]
+		return str()
+
+
 
 	def makeCallStatement(self, _array, _type, _value):
 		flag = self.reMakeType(_type)

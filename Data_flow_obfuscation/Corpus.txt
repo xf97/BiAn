@@ -15,10 +15,10 @@
 	 "variableDeclaration": "\tuint256[] public _integer_constant = ["
 	},
 	{"type": "StringArrayDeclare",
-	 "variableDeclaration": "\tstring[] public _string_const = ["
+	 "variableDeclaration": "\tstring[] public _string_constant = ["
 	},
 	{"type": "AddressArrayDeclare",
-	 "variableDeclaration": "\taddress payable[] public _address_const = ["
+	 "variableDeclaration": "\taddress payable[] public _address_constant = ["
 	}
    ]
 }
