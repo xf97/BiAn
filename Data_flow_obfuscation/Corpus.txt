@@ -1,17 +1,20 @@
 {
   {"type": "getIntFunction",
-    "functionHeadAndBody": "	function getIntPara(uint256 _para) internal pure returns(uint256){
-					return 	_para;
-				}" 
+    "functionHeadAndBody": “
+     function getIntFunc(uint256 index) internal view returns(uint256){
+	return _int_const[index];
+     }\n" 
   },
   {"type":"getStrFunction",
-   "functionHeadAndBody": "	function getStringPara(string storage _para) internal pure returns(string storage){
-					return _para;
-				}"
+   "functionHeadAndBody": "
+    function getStrFunc(uint256 index) internal view returns(string storage){
+	return _str_const[index];
+    }"
   },
   {"type":"getAddrFunction", 
-   "functionHeadAndBody": "	function getAddrPara(address payable _para) internal pure returns(address payable){
-					return _para;				
-				}"
+   "functionHeadAndBody": "
+    function getAddrFunc(uint256 index) internal view returns(address payable){
+	return _addr_const[index];
+    }\n"
   }
 }
