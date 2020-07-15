@@ -49,6 +49,6 @@ class dataflowObfuscation:
 
 #unit test
 if __name__ == "__main__":
-	dfo = dataflowObfuscation("testCase/testCase4.sol", "testCase/testCase4.sol_json.ast")
+	dfo = dataflowObfuscation("testCase/testCase1.sol", "testCase/testCase1.sol_json.ast")
 	#print(dfo.solContent)
 	dfo.run()

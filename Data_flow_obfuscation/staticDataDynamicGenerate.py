@@ -17,6 +17,7 @@ Solidity is a limited language, as is Ethereum.
 import os
 import json
 import sys
+import re
 
 ADDRESS_FLAG = "address"
 STRING_FLAG = "literal_string"
@@ -62,16 +63,82 @@ class staticDataDynamicGenerate:
 				continue	
 		#2.3 insert variable - array
 		#insertPosition = self.getContractStartOrEnd(START_FLAG)
+		arrayList = list()
 		for _type in typeList:
 			if _type == ADDRESS_FLAG:
-				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				arrayList.append(array)
 			elif _type == STRING_FLAG:
-				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				arrayList.append(array)
 			elif _type == INT_FLAG:
-				(nowContent, insertPosition) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				(nowContent, insertPosition,array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				arrayList.append(array)
 			else:
 				continue
+		#3. find all literals and replace it 
+		insertList = list()
+		for _dict in literalList:
+			(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
+			callStatement = self.makeCallStatement(arrayList, _type, value)
+			nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
 		print(nowContent)
+
+	def strReplace(self, _oldContent, _insertContent, _startPos, _endPos):
+		return _oldContent[startPos:] + _insertContent + _oldContent[:endPos]
+
+	def makeCallStatement(self, _array, _type, _value):
+		flag = self.reMakeType(_type)
+		for state in _array:
+			if flag == state.split()[0]:
+				valueList = self.getArrayElement(state, _type)
+				for index in range(len(valueList)):
+					if str(_value) == valueList[index] and _type == INT_FLAG:
+						return " = getIntFunc(" + str(index) + ");"
+					elif str(_value) == valueList[index] and _type == ADDRESS_FLAG:
+						return " = getAddrFunc(" + str(index) + ");"
+					elif  _type == STRING_FLAG and  _value == valueList[index].strip("\""):
+						return " = getStrFunc(" + str(index) + ");"
+		return str()
+
+	def getArrayElement(self, _state, _type):
+		temp = _state.split("=")[1]
+		result = list()
+		if _type == INT_FLAG:
+			for i in re.finditer(r"(\d)+", temp):
+				result.append(i.group())
+		elif _type == ADDRESS_FLAG:
+			for i in re.finditer(r"((0x)|(0X))?(\w){39,41}", temp):
+				result.append(i.group())
+		elif _type == STRING_FLAG:
+			for i in re.finditer(r"(\")(.)*(\")", temp):
+				result.append(i.group())
+		#print(result)
+		return result
+
+	def reMakeType(self, _type):
+		if _type == INT_FLAG:
+			return "uint256[]"
+		elif _type == STRING_FLAG:
+			return "string[]"
+		elif _type == ADDRESS_FLAG:
+			return "address"
+
+	def getLiteralInfor(self, _dict):
+		try:
+			startPos = _dict["src"].split(":")[0]
+			endPos = int(_dict["src"].split(":")[1]) + int(startPos)
+			_type = _dict["attributes"]["type"].split()[0]
+			if _type == INT_FLAG:
+				_value = _dict["attributes"]["type"].split()[1]
+			elif _dict["attributes"]["value"] == None:
+				return 0, 0, 0, 0
+			else:
+				_value = _dict["attributes"]["value"]
+			return _type, _value, startPos, endPos
+		except:
+			return 0, 0, 0, 0
+
 
 
 	def insertArrayDeclare(self, _content, _position, _type):
@@ -89,7 +156,7 @@ class staticDataDynamicGenerate:
 						intStr = _dict.get("variableDeclaration")
 						intStr += self.getValue(_type)
 		#print(self.strInsert(_content, intStr, _position))#, _position + len(intStr))
-		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr)
+		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr), intStr
 
 	def getValue(self, _type):
 		typeList = self.findLiteral(self.json, "name", "Literal")
