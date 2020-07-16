@@ -11,7 +11,7 @@ contract tooManyDigits{
     address private _address = 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed;
     string public symbol;
     bytes _16jinzhi;
-    address[] public users;
+    address[] public users = [0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed, 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed];
     address payable owner;
     
     constructor() public{
