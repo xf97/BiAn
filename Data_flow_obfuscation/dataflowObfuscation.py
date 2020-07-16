@@ -12,6 +12,7 @@ import os
 import json
 import sys
 from staticDataDynamicGenerate import staticDataDynamicGenerate
+from literal2Exp import literal2Exp
 
 
 class dataflowObfuscation:
@@ -19,7 +20,8 @@ class dataflowObfuscation:
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
 		self.json = self.getJsonContent(_jsonFile)
-		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert literal to dynamic generated data 
+		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
+		self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
 
 	def getOutputFileName(self, _filepath):
 		temp = _filepath.split(".")
@@ -45,6 +47,7 @@ class dataflowObfuscation:
 
 	def run(self):
 		constant2VarContent = self.SDDG.doGenerate()
+		#self.L2E.doGenerate()
 		self.writeStrToFile("testCase/temp.sol", constant2VarContent)
 
 

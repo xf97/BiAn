@@ -4,8 +4,8 @@ pragma solidity 0.6.2;
 
 contract tooManyDigits{
     //In Solidity, scientific counting method is provided to represent big numbers and small numbers, and ether unit is also provided to represent the amount of ether. Trying to write multiple digits in succession with these substitutions, these effectively reduce the chance of making mistakes and make the code easier to understand.
-    uint256 public oncePrice =  uint256(getIntFunc(2)); //10^18, integer literal
-    uint256 public twicePrice =  uint256(getIntFunc(0)); //10^12, integer literal
+    uint256 public oncePrice =  uint256(getIntFunc(1)); //10^18, integer literal
+    uint256 public twicePrice =  uint256(getIntFunc(2)); //10^12, integer literal
     uint8 public tokenDecimal;
     address public checkAddress =  getAddrFunc(0); //address literal
     address private _address =  getAddrFunc(0);
@@ -13,12 +13,19 @@ contract tooManyDigits{
     bytes _16jinzhi;
     address[] public users = [ getAddrFunc(0),  getAddrFunc(0)];
     address payable owner;
+    struct Voter {
+        uint weight;
+        bool voted;
+        address delegate;
+        uint vote;
+    }
+    enum State { Created, Locked, Inactive }
     
     constructor() public{
 	symbol =  getStrFunc(0);
 	_16jinzhi = hex"001122ff";
 	owner = msg.sender;
-	tokenDecimal =  uint8(getIntFunc(1));
+	tokenDecimal =  uint8(getIntFunc(0));
     }
     
     function withdraw() external{
@@ -41,5 +48,5 @@ contract tooManyDigits{
  	}
 	address payable[] public _address_constant = [0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed];
 	string[] public _string_constant = ["xf's testCase"];
-	uint256[] public _integer_constant = [18000000000000, 18, 1000000000000000000];
+	uint256[] public _integer_constant = [18, 1000000000000000000, 18000000000000];
 }

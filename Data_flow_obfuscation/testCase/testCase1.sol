@@ -13,6 +13,13 @@ contract tooManyDigits{
     bytes _16jinzhi;
     address[] public users = [0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed, 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed];
     address payable owner;
+    struct Voter {
+        uint weight;
+        bool voted;
+        address delegate;
+        uint vote;
+    }
+    enum State { Created, Locked, Inactive }
     
     constructor() public{
 	symbol = "xf's testCase";

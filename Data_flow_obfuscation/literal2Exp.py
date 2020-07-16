@@ -10,7 +10,7 @@ class literal2Exp:
 		self.content = _solContent
 		self.json = _jsonContent
 
-	def findASTNode(self, _name, _value):
+	def findASTNode(self, _key, _value):
 		queue = [self.json]
 		result = list()
 		literalList = list()
@@ -27,8 +27,50 @@ class literal2Exp:
 							queue.append(item)
 		return result
 
-	def generateExp(self):
+	def getIntNode(self, _list):
+		result = list()
+		for node in _list:
+			try:
+				if node["attributes"].get("type").split()[0] == INT_FLAG:
+					result.append(node)
+				else:
+					continue
+			except:
+				continue
+		return result
+
+	def getNodeInfor(self, _node):
+		try:
+			value = _node["attributes"]["type"].split()[1]
+			startPos = int(_node["src"].split(":")[0])
+			endPos = int(_node["src"].split(":")[1])
+			return value, startPos, endPos
+		except:
+			return 0, 0, 0
+
+	def generateExp(self, _str):
+		return "hahaha"
+
+	def replaceContent(self, _content, _exp, _startPos, _endPos):
+		return _content[: _startPos] + _exp + _content[(_startPos + _endPos):]
+
+	def doGenerate(self):
 		#1. find each literal
 		literalList = self.findASTNode("name", "Literal")
 		#2. find int literals in all literals
-		intLiteralList = self.getIntNode()
+		intLiteralList = self.getIntNode(literalList)
+		#3. get literal's  value and position
+		intNodeInfor = list()
+		for node in intLiteralList:
+			(value, startPos, endPos) = self.getNodeInfor(node)
+			intNodeInfor.append([value, startPos, endPos])
+		#print(intNodeInfor)
+		#4. generate corresponding exp
+		for node in intNodeInfor:
+			exp = self.generateExp(node[0])
+			node[0] = exp
+		#5. replace literal
+		nowContent = self.content
+		for node in intNodeInfor:
+			nowContent = self.replaceContent(self.content, node[0], node[1], node[2])
+		return nowContent
