@@ -8,7 +8,10 @@
 		},
 		{"type":"getAddrFunction", 
    		"functionHeadAndBody": "\tfunction getAddrFunc(uint256 index) internal view returns(address payable){\n \t\treturn _address_constant[index];\n \t}\n"
-  }
+		},
+		{"type":"getBoolFunction",
+		 "functionHeadAndBody": "\tfunction getBoolFunc(uint256 index) internal view returns(bool){\n \t\treturn _bool_constant[index];\n \t}\n"
+		}
   ],
   "insertVariable": [
 	{"type": "UintArrayDeclare",
@@ -19,6 +22,9 @@
 	},
 	{"type": "AddressArrayDeclare",
 	 "variableDeclaration": "\taddress payable[] public _address_constant = ["
+	},
+	{"type": "BoolArrayDeclare",
+	 "variableDeclaration": "\tbool[] public _bool_constant = ["
 	}
    ]
 }

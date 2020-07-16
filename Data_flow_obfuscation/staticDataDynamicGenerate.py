@@ -22,6 +22,7 @@ import re
 ADDRESS_FLAG = "address"
 STRING_FLAG = "literal_string"
 INT_FLAG = "int_const"
+BOOL_FLAG = "bool"
 
 CORPUS_PATH = "Corpus.txt"
 
@@ -42,12 +43,48 @@ class staticDataDynamicGenerate:
 		#print(corpusDict,"kkkkkkkk")
 		return corpusDict
 
+	def getIntType(self):
+		temp1 = self.findLiteral(self.json, "name", "Assignment")
+		temp2 = self.findLiteral(self.json, "name", "VariableDeclaration")
+		result = list()
+		print(len(temp1), len(temp2))
+		for item in temp1:
+			try:
+				if item["children"][1].get("name") == "Literal":
+					result.append(item)
+				else:
+					continue
+			except:
+				continue
+		for item in temp2:
+			try:
+				if item["children"][1].get("name") == "Literal":
+					result.append(item)
+				else:
+					continue
+			except:
+				continue
+		print(result)
+		for _dict in result:
+			startPos = int(_dict["src"].split(":")[0])
+			endPos = int(_dict["src"].split(":")[1]) + int(startPos)
+			_type = _dict["attributes"]["type"]
+			return _type, startPos, endPos
+
+
+
 	def doGenerate(self):
 		#1. find each literal 
 		literalList = self.findLiteral(self.json, "name", "Literal")
 		#2. generate each literal's replacement
 		#2.1 declare array to store literal
 		typeList = self.getLiteralType(literalList)
+		#patch
+		intTypeList = list()
+		for _type in typeList:
+			if _type == INT_FLAG:
+				actualType, startPos, endPos = self.getIntType()
+				print(actualType, startPos, endPos)
 		nowContent = self.content
 		insertPosition = self.getContractStartOrEnd(END_FLAG)
 		#2.2 write getter function into contract
@@ -58,6 +95,8 @@ class staticDataDynamicGenerate:
 			elif _type == STRING_FLAG:
 				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
 			elif _type == INT_FLAG:
+				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
+			elif _type == BOOL_FLAG:
 				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
 			else:
 				continue	
@@ -72,7 +111,10 @@ class staticDataDynamicGenerate:
 				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
 				arrayList.append(array)
 			elif _type == INT_FLAG:
-				(nowContent, insertPosition,array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+				arrayList.append(array)
+			elif _type == BOOL_FLAG:
+				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
 				arrayList.append(array)
 			else:
 				continue
@@ -83,6 +125,7 @@ class staticDataDynamicGenerate:
 			callStatement = self.makeCallStatement(arrayList, _type, value)
 			insertList.append([callStatement, startPos, endPos])
 			#nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
+		#print(insertList)
 		nowContent = self.strReplace(nowContent, insertList)
 		return nowContent
 
@@ -100,8 +143,7 @@ class staticDataDynamicGenerate:
 			else:
 				sliceIndex.append(int(item[1]))
 				sliceIndex.append(int(item[2]))
-
-		sliceIndex = self.filterList(sliceIndex)
+		#sliceIndex = self.filterList(sliceIndex)
 		sliceIndex.sort()	# from small to big
 		flag = 0
 		index = 0
@@ -114,11 +156,12 @@ class staticDataDynamicGenerate:
 				temp += self.getCallStatement(_list, index, sliceIndex[flag])
 				index = sliceIndex[flag] 
 				flag += 1
+		temp += _oldContent[index : ]
 		return temp
 
 	def getCallStatement(self, _list, _startPos, _endPos):
 		for item in _list:
-			if item[1] == _startPos and item[2] == _endPos:
+			if int(item[1]) == _startPos and int(item[2]) == _endPos:
 				return item[0]
 		return str()
 
@@ -128,14 +171,18 @@ class staticDataDynamicGenerate:
 		flag = self.reMakeType(_type)
 		for state in _array:
 			if flag == state.split()[0]:
+				#print("hello", flag, _type, _type == BOOL_FLAG, state)
 				valueList = self.getArrayElement(state, _type)
 				for index in range(len(valueList)):
 					if str(_value) == valueList[index] and _type == INT_FLAG:
-						return " = getIntFunc(" + str(index) + ");"
+						return " getIntFunc(" + str(index) + ")"
 					elif str(_value) == valueList[index] and _type == ADDRESS_FLAG:
-						return " = getAddrFunc(" + str(index) + ");"
+						return " getAddrFunc(" + str(index) + ")"
 					elif  _type == STRING_FLAG and  _value == valueList[index].strip("\""):
-						return " = getStrFunc(" + str(index) + ");"
+						return " getStrFunc(" + str(index) + ")"
+					elif _type == BOOL_FLAG and str(_value) == valueList[index]:
+						#print(str(_value), valueList[index])
+						return " getBoolFunc(" + str(index) + ")"
 		return str()
 
 	def getArrayElement(self, _state, _type):
@@ -150,6 +197,9 @@ class staticDataDynamicGenerate:
 		elif _type == STRING_FLAG:
 			for i in re.finditer(r"(\")(.)*(\")", temp):
 				result.append(i.group())
+		elif _type == BOOL_FLAG:
+			for i in re.finditer(r"((false)|(true))", temp):
+				result.append(i.group())
 		#print(result)
 		return result
 
@@ -160,10 +210,12 @@ class staticDataDynamicGenerate:
 			return "string[]"
 		elif _type == ADDRESS_FLAG:
 			return "address"
+		elif _type == BOOL_FLAG:
+			return "bool[]"
 
 	def getLiteralInfor(self, _dict):
 		try:
-			startPos = _dict["src"].split(":")[0]
+			startPos = int(_dict["src"].split(":")[0])
 			endPos = int(_dict["src"].split(":")[1]) + int(startPos)
 			_type = _dict["attributes"]["type"].split()[0]
 			if _type == INT_FLAG:
@@ -190,6 +242,9 @@ class staticDataDynamicGenerate:
 						intStr = _dict.get("variableDeclaration")
 						intStr += self.getValue(_type)
 					elif  _type == ADDRESS_FLAG and _dict.get("type") == "AddressArrayDeclare":
+						intStr = _dict.get("variableDeclaration")
+						intStr += self.getValue(_type)
+					elif _type == BOOL_FLAG and _dict.get("type") == "BoolArrayDeclare":
 						intStr = _dict.get("variableDeclaration")
 						intStr += self.getValue(_type)
 		#print(self.strInsert(_content, intStr, _position))#, _position + len(intStr))
@@ -230,6 +285,14 @@ class staticDataDynamicGenerate:
 					intStr += "\"" + string + "\""
 				else:
 					intStr += "\"" + string + "\""
+					intStr += ", "
+			intStr += "];\n"
+		elif _type == BOOL_FLAG:
+			for flag in valueList:
+				if valueList.index(flag) == len(valueList) - 1:
+					intStr += flag
+				else:
+					intStr += flag 
 					intStr += ", "
 			intStr += "];\n"
 		return intStr
@@ -274,6 +337,8 @@ class staticDataDynamicGenerate:
 					elif  _type == STRING_FLAG and _dict.get("type") == "getStrFunction":
 						intStr = _dict.get("functionHeadAndBody")
 					elif  _type == ADDRESS_FLAG and _dict.get("type") == "getAddrFunction":
+						intStr = _dict.get("functionHeadAndBody")
+					elif _type == BOOL_FLAG and _dict.get("type") == "getBoolFunction":
 						intStr = _dict.get("functionHeadAndBody")
 		#print(self.strInsert(_content, intStr, _position))#, _position + len(intStr))
 		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr)

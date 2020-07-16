@@ -50,6 +50,9 @@ class dataflowObfuscation:
 
 #unit test
 if __name__ == "__main__":
-	dfo = dataflowObfuscation("testCase/testCase1.sol", "testCase/testCase1.sol_json.ast")
-	#print(dfo.solContent)
-	dfo.run()
+	if len(sys.argv) != 3:
+		print("wrong parameters.")
+	else:
+		dfo = dataflowObfuscation(sys.argv[1], sys.argv[2])
+		#print(dfo.solContent)
+		dfo.run()
