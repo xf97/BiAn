@@ -44,32 +44,23 @@ class staticDataDynamicGenerate:
 		return corpusDict
 
 	def getIntType(self):
-		temp1 = self.findLiteral(self.json, "name", "Assignment")
-		temp2 = self.findLiteral(self.json, "name", "VariableDeclaration")
-		result = list()
-		print(len(temp1), len(temp2))
-		for item in temp1:
+		temp = self.findLiteral(self.json, "name", "VariableDeclaration")
+		intNode = list()
+		for node in temp:
 			try:
-				if item["children"][1].get("name") == "Literal":
-					result.append(item)
+				if node["attributes"].get("type").find("int") != -1:
+					intNode.append(node)
 				else:
 					continue
 			except:
 				continue
-		for item in temp2:
-			try:
-				if item["children"][1].get("name") == "Literal":
-					result.append(item)
-				else:
-					continue
-			except:
-				continue
-		print(result)
-		for _dict in result:
-			startPos = int(_dict["src"].split(":")[0])
-			endPos = int(_dict["src"].split(":")[1]) + int(startPos)
-			_type = _dict["attributes"]["type"]
-			return _type, startPos, endPos
+		intNodeInfor = list()
+		for node in intNode:
+			_type = node["attributes"].get("type")
+			_id = node["id"]
+			intNodeInfor.append([_type, _id])
+		return intNodeInfor
+
 
 
 
@@ -80,11 +71,7 @@ class staticDataDynamicGenerate:
 		#2.1 declare array to store literal
 		typeList = self.getLiteralType(literalList)
 		#patch
-		intTypeList = list()
-		for _type in typeList:
-			if _type == INT_FLAG:
-				actualType, startPos, endPos = self.getIntType()
-				print(actualType, startPos, endPos)
+		intTypeList = self.getIntType()
 		nowContent = self.content
 		insertPosition = self.getContractStartOrEnd(END_FLAG)
 		#2.2 write getter function into contract
@@ -122,12 +109,30 @@ class staticDataDynamicGenerate:
 		insertList = list()
 		for _dict in literalList:
 			(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
-			callStatement = self.makeCallStatement(arrayList, _type, value)
+			if _type == INT_FLAG:
+				callStatement = self.makeCallStatement(arrayList, _type, value)
+				callStatement = self.remakeCallStatement(callStatement, startPos, endPos, intTypeList)
+			else:
+				callStatement = self.makeCallStatement(arrayList, _type, value)
 			insertList.append([callStatement, startPos, endPos])
 			#nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
 		#print(insertList)
 		nowContent = self.strReplace(nowContent, insertList)
 		return nowContent
+
+	def remakeCallStatement(self, _state, _startPos, _endPos, _typeList):
+		temp = self.findLiteral(self.json, "name", "VariableDeclaration");
+		temp.extend(self.findLiteral(self.json, "name", "Assignment"))
+		for i in temp:
+			sPos = self.listToInt([i["src"].split(":")[0]])
+			ePos = self.listToInt(i["src"].split(":"))
+			if sPos <= _startPos and ePos >= _endPos:
+				_type = i["attributes"]["type"]
+				return " " + _type + "(" + _state.lstrip() + ")"
+				#return " " + _type + "(" + _state.lstrip() + ")"
+
+
+
 
 	'''
 	def strReplace(self, _oldContent, _insertContent, _startPos, _endPos):
