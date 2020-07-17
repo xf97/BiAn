@@ -4,14 +4,14 @@ pragma solidity 0.6.2;
 
 contract tooManyDigits{
     //In Solidity, scientific counting method is provided to represent big numbers and small numbers, and ether unit is also provided to represent the amount of ether. Trying to write multiple digits in succession with these substitutions, these effectively reduce the chance of making mistakes and make the code easier to understand.
-    uint256 public oncePrice =  uint256(getIntFunc(0)); //10^18, integer literal
-    uint256 public twicePrice =  uint256(getIntFunc(1)); //10^12, integer literal
+    uint256 public oncePrice = 681714399417178675 / 585320629933435574 / 568421490586080230 + 790587791127690211  + 755399323187675535431554801074176/3607236308023877; //10^18, integer literal
+    uint256 public twicePrice = ( 19132350599 - 5239003734 ) * 1537848791 - 13038958654  - 21365866646244931561; //10^12, integer literal
     uint8 public tokenDecimal;
-    address public checkAddress =  getAddrFunc(0); //address literal
-    address private _address =  getAddrFunc(0);
+    address public checkAddress = 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed; //address literal
+    address private _address = 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed;
     string public symbol;
     bytes _16jinzhi;
-    address[] public users = [ getAddrFunc(0),  getAddrFunc(0)];
+    address[] public users = [0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed, 0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed];
     address payable owner;
     struct Voter {
         uint weight;
@@ -22,10 +22,10 @@ contract tooManyDigits{
     enum State { Created, Locked, Inactive }
     
     constructor() public{
-	symbol =  getStrFunc(0);
+	symbol = "xf's testCase";
 	_16jinzhi = hex"001122ff";
 	owner = msg.sender;
-	tokenDecimal =  uint8(getIntFunc(2));
+	tokenDecimal = ( 8 * 8 ) / 9 + 12  - 10/9;
     }
     
     function withdraw() external{
@@ -37,16 +37,4 @@ contract tooManyDigits{
         require(msg.value == oncePrice);    //1 ether 1 time
         users.push(msg.sender);
     }
-	function getStrFunc(uint256 index) internal view returns(string storage){
- 		return _string_constant[index];
- 	}
-	function getAddrFunc(uint256 index) internal view returns(address payable){
- 		return _address_constant[index];
- 	}
-	function getIntFunc(uint256 index) internal view returns(uint256){
- 		return _integer_constant[index];
- 	}
-	string[] public _string_constant = ["xf's testCase"];
-	address payable[] public _address_constant = [0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed];
-	uint256[] public _integer_constant = [1000000000000000000, 20000000000, 18];
 }

@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import random
+from generateExp import generateExp
 
 INT_FLAG = "int_const"
 
@@ -49,7 +50,8 @@ class literal2Exp:
 			return 0, 0, 0
 
 	def generateExp(self, _str):
-		return "hahaha"
+		ge = generateExp(int(_str))
+		return ge.main()
 
 	def replaceContent(self, _content, _exp, _startPos, _endPos):
 		return _content[: _startPos] + _exp + _content[(_startPos + _endPos):]
