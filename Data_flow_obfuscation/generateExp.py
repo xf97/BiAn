@@ -14,6 +14,10 @@ class generateExp:
         self.answerFile = "Answer.txt"
 
     def main(self):
+        if self.target <= 2:
+            target = 10
+        else:
+            target = self.target
         """
         主函数
         """
@@ -41,15 +45,15 @@ class generateExp:
         if self.expNum:
             #表达式的范围
             if self.target:
-                config = Config(exp_num=int(self.expNum),num_range=int(self.target))
+                config = Config(exp_num=int(self.expNum),num_range=int(target))
             else:
                 config = Config(exp_num=int(self.expNum))
-            print("** An arithmetic expression replacing literal (" + str(self.target) + ") is being generated. **")
+            print("Arithmetic expression replacing literal (" + str(self.target) + ") is being generated.")
             generator = Generator()
             res_list = generator.generate(config)
             generator.normalize_exp(res_list)
             expression_result(res_list)
-            print('** Generation is complete. **')
+            print('Generation is complete.')
         #后期处理表达式的值
         #print(args.exercise_arg, args.answer_arg)
         pp = postProcessing(self.expFile, self.answerFile, self.target)

@@ -82,7 +82,7 @@ class Generator:
             right_position = randint(left_position+1, int(num/2)+1)
             mark = -1
             for i in range(exp_length):
-                if exp[i] in ['+', '-', 'x', '÷']:
+                if exp[i] in ['+', '-', 'x']:
                     expression.append(exp[i])
                 else:
                     mark += 1
@@ -137,7 +137,7 @@ class Generator:
         :param: None
         :return: + - x ÷
         """
-        operators = ['+', '-', 'x', '÷']
+        operators = ['+', '-', 'x']
         return operators[randint(0,len(operators) - 1)]
 
     def is_repeat(self, express_set, expression):

@@ -13,6 +13,7 @@ import json
 import sys
 from staticDataDynamicGenerate import staticDataDynamicGenerate
 from literal2Exp import literal2Exp
+import time
 
 
 class dataflowObfuscation:
@@ -20,12 +21,13 @@ class dataflowObfuscation:
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
 		self.json = self.getJsonContent(_jsonFile)
-		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
-		self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
+		self.middleContract = "temp.sol"
+		self.middleJsonAST = "temp.sol_json.ast"
+		#self.finalContract = _filepath.split(".sol")[0] + "_dataflow_confuse.sol"
 
 	def getOutputFileName(self, _filepath):
-		temp = _filepath.split(".")
-		newFileName = temp[0] + "_dataflow_confuse." + temp[1]
+		temp = _filepath.split(".sol")
+		newFileName = temp[0] + "_dataflow_confuse.sol"
 		return newFileName
 
 	def getContent(self, _filepath):
@@ -40,16 +42,30 @@ class dataflowObfuscation:
 		jsonDict = json.loads(jsonStr)
 		return jsonDict
 
-	def writeStrToFile(self, _filename, _str):
+	def writeStrToFile(self, _filename, _str, _step):
 		with open(_filename, "w", encoding = "utf-8") as f:
 			f.write(_str)
-		print(_filename, "is writed.")
+		print(_step, ".... done")
+
+	def recompileMiddleContract(self):
+		compileResult = os.popen("solc --ast-json --pretty-json --overwrite " + self.middleContract + " -o .")
+		#print(compileResult.read())
+		print("\rIntermediate contract is being generated.", end = " ")
+		time.sleep(1.5)
+		print("\rIntermediate contract is being generated....done")
+		self.solContent = self.getContent(self.middleContract)
+		self.json = self.getJsonContent(self.middleJsonAST)
+
+
 
 	def run(self):
+		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 		nowContent = self.SDDG.doGenerate()
-		#nowContent = self.L2E.doGenerate()
-		self.writeStrToFile("testCase/temp.sol", nowContent)
-
+		self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
+		self.recompileMiddleContract()
+		self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
+		nowContent = self.L2E.doGenerate()
+		self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
 
 #unit test
 if __name__ == "__main__":
@@ -57,5 +73,5 @@ if __name__ == "__main__":
 		print("wrong parameters.")
 	else:
 		dfo = dataflowObfuscation(sys.argv[1], sys.argv[2])
-		#print(dfo.solContent)
 		dfo.run()
+		#print(dfo.solContent)

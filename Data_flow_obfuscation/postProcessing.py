@@ -86,5 +86,6 @@ class postProcessing:
 		#2. modify expressions
 		expList = self.modifyExp(expList, answerList)
 		#3. randomly select one exp
-		finalExp = expList[random.randint(0, len(expList))]
+		index = random.randint(0, len(expList))
+		finalExp = expList[index]
 		return finalExp
