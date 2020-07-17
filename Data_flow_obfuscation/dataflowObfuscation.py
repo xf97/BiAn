@@ -46,9 +46,9 @@ class dataflowObfuscation:
 		print(_filename, "is writed.")
 
 	def run(self):
-		constant2VarContent = self.SDDG.doGenerate()
-		#self.L2E.doGenerate()
-		self.writeStrToFile("testCase/temp.sol", constant2VarContent)
+		nowContent = self.SDDG.doGenerate()
+		#nowContent = self.L2E.doGenerate()
+		self.writeStrToFile("testCase/temp.sol", nowContent)
 
 
 #unit test

@@ -67,10 +67,12 @@ class literal2Exp:
 		#print(intNodeInfor)
 		#4. generate corresponding exp
 		for node in intNodeInfor:
+			#print(node)
 			exp = self.generateExp(node[0])
 			node[0] = exp
 		#5. replace literal
 		nowContent = self.content
 		for node in intNodeInfor:
-			nowContent = self.replaceContent(self.content, node[0], node[1], node[2])
+			#print(node)
+			nowContent = self.replaceContent(nowContent, node[0], node[1], node[2])
 		return nowContent
