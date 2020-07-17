@@ -1,10 +1,13 @@
 # BiAn(狴犴)
-![logo](logo.jpg)
+![logo](BiAnLogo.png)
 
-BiAn is a tool developed for Ethereum smart contracts that impedes symbolic execution. It is used to branch obfuscation. The members participating in this project are @xf97, ZhangMeng.
+**BiAn** is a source code level code obfuscation tool developed for Solidity smart contracts. We will obfuscate the Solidity smart contract from the following three aspects:
++ **Layout obfuscation**. In this aspect, I have completed the development of *variable name replacement*, and other functions will be gradually launched.
++ **Data flow obfuscation**. In this aspect, I have completed the development of *Dynamic Generate Static Data* and *Convert Integer Literals to Arithmetic Expressions*, and other functions will also be gradually introduced.
++ **Control flow obfuscation**. This aspect will be developed by the project collaborator *Zhang Meng*.
 
-# Idea
-We will use two techniques, *opaque predicate* and *hidden branch condition*, to obfuscate the smart contract bytecode, so as to achieve the purpose of resisting symbol execution. We want to increase the difficulty of symbol execution, thereby promoting the development of symbol execution tools for smart contracts, or providing more difficult test cases.
+## Possible use 
+
 
 # License
 This program is issued, reproduced or used under the permission of **MIT**. Please indicate the source.
