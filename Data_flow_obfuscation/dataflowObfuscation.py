@@ -13,6 +13,7 @@ import json
 import sys
 from staticDataDynamicGenerate import staticDataDynamicGenerate
 from literal2Exp import literal2Exp
+from splitBoolVariable import splitBoolVariable
 import time
 
 
@@ -59,6 +60,7 @@ class dataflowObfuscation:
 
 
 	def run(self):
+		'''
 		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 		nowContent = self.SDDG.doGenerate()
 		self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
@@ -66,6 +68,9 @@ class dataflowObfuscation:
 		self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
 		nowContent = self.L2E.doGenerate()
 		self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
+		'''
+		self.SBV = splitBoolVariable(self.solContent, self.json)
+		self.SBV.doSplit()
 
 #unit test
 if __name__ == "__main__":
