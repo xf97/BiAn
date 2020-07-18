@@ -1,2 +1,4 @@
-/EVM stack, memory and storage emulator
 /Reference_paper
+/Get_each_dict
+*.sol
+*.txt
