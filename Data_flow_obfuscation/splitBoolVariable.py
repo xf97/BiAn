@@ -68,3 +68,17 @@ class splitBoolVariable:
 		#2. 找到每个VariableDeclaration、VariableDeclarationStatement、Assignment节点
 		statementList = self.findStatement()
 		boolOpeStatement = list()
+		#3. 找到对bool变量操作的语句
+		for statement in statementList:
+			try:
+				if statement["name"] == "VariableDeclaration":
+					pass
+				elif statement["name"] == "VariableDeclarationStatement":
+					pass
+				elif statement["name"] == "Assignment":
+					pass
+				else:
+					continue
+			except:
+				continue
+		print(len(boolOpeStatement))
