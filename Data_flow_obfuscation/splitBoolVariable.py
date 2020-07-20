@@ -173,6 +173,7 @@ class splitBoolVariable:
 
 	def getBoolExp(self, _flag):
 		flag = randint(0,1)
+		ope = ["==", "!="]
 		if flag:
 			if len(self.boolExpList) == 0:
 				expList = list()
@@ -189,10 +190,10 @@ class splitBoolVariable:
 			exp2 = str()
 			if _flag:
 				return  " || ((" + self.generateExp(str(randint(0, RANDOM_LIMIT))) \
-				+ ") == (" + self.generateExp(str(randint(0, RANDOM_LIMIT))) + "))"
+				+ ") " + ope[randint(0,1)]  + " (" + self.generateExp(str(randint(0, RANDOM_LIMIT))) + "))"
 			else:
 				return  " && ((" + self.generateExp(str(randint(0, RANDOM_LIMIT))) \
-				+ ") == (" + self.generateExp(str(randint(0, RANDOM_LIMIT))) + "))"
+				+ ") " + ope[randint(0,1)] + " (" + self.generateExp(str(randint(0, RANDOM_LIMIT))) + "))"
 
 
 	def doSplit(self):

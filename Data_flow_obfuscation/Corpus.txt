@@ -63,6 +63,6 @@
 	},
 	{"value": "false",
 	 "text": "!(true || false)"
-	},
+	}
   ]
 }
