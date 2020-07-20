@@ -26,5 +26,16 @@
 	{"type": "BoolArrayDeclare",
 	 "variableDeclaration": "\tbool[] public _bool_constant = ["
 	}
-   ]
+   ],
+  "boolExpressions": [
+	{"value": "false",
+	 "text": "false"
+	},
+	{"value": "true",
+	 "text": "true"
+	},
+	{"value": "true",
+	 "text": "(2==4)"
+	}
+  ]
 }
