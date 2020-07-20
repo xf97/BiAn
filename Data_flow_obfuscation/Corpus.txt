@@ -34,8 +34,35 @@
 	{"value": "true",
 	 "text": "true"
 	},
+	{"value": "false",
+	 "text": "(true && false)"
+	},
 	{"value": "true",
-	 "text": "(2==4)"
-	}
+	 "text": "(true || false)"
+	},
+	{"value": "true",
+	 "text": "(true || !false)"
+	},
+	{"value": "true",
+	 "text": "(true && !false && true)"
+	},
+	{"value": "true",
+	 "text": "(!true && false) || true"
+	},
+	{"value": "true",
+	 "text": "(true || false || true) && (false || true || false)"
+	},
+	{"value": "false",
+	 "text": "(true || false || true) && (false || false || false)"
+	},
+	{"value": "false",
+	 "text": "!(!(true || false))"
+	},
+	{"value": "false",
+	 "text": "!(!(true || false))"
+	},
+	{"value": "false",
+	 "text": "!(true || false)"
+	},
   ]
 }
