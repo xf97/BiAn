@@ -60,7 +60,6 @@ class dataflowObfuscation:
 
 
 	def run(self):
-		s_time = time.time()
 		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 		nowContent = self.SDDG.doGenerate()
 		self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
@@ -73,7 +72,10 @@ class dataflowObfuscation:
 		nowContent = self.SBV.doSplit()
 		self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
 		e_time = time.time()
-		print(e_time - s_time)
+		'''
+		self.NTP = noTouchPure(self.json)
+		self.NTP.run()
+		'''
 
 #unit test
 if __name__ == "__main__":

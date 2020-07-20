@@ -18,6 +18,7 @@ import os
 import json
 import sys
 import re
+from noTouchPure import noTouchPure
 
 ADDRESS_FLAG = "address"
 STRING_FLAG = "literal_string"
@@ -35,6 +36,7 @@ class staticDataDynamicGenerate:
 		self.content = _solContent
 		self.json = _jsonContent
 		self.corpusDict = self.getCorpus()
+		self.NTP = noTouchPure(self.json)
 
 	def getCorpus(self):
 		corpusDict = dict()
@@ -67,6 +69,8 @@ class staticDataDynamicGenerate:
 	def doGenerate(self):
 		#1. find each literal 
 		literalList = self.findLiteral(self.json, "name", "Literal")
+		literalList = self.NTP.run(literalList)
+		#print(len(literalList))
 		#2. generate each literal's replacement
 		#2.1 declare array to store literal
 		typeList = self.getLiteralType(literalList)
