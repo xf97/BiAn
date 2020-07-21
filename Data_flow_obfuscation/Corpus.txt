@@ -64,5 +64,8 @@
 	{"value": "false",
 	 "text": "!(true || false)"
 	}
-  ]
+  ],
+ "variableNaming":  [
+	"BiAnIsACodeObfuscationToolForSoliditySmartContracts", "JiuZhouIsADataSetOfEthereumBugSmartContracts", "SolidityCheckIsAStaticCodeProblemDetectionToolBasedOnRegularExpressionsAndProgramInstrumentationWhichIsDevelopedForEthereumSmartContracts"
+ ]
 }

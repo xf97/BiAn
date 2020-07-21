@@ -14,6 +14,7 @@ import sys
 from staticDataDynamicGenerate import staticDataDynamicGenerate
 from literal2Exp import literal2Exp
 from splitBoolVariable import splitBoolVariable
+from local2State import local2State
 import time
 
 
@@ -60,6 +61,14 @@ class dataflowObfuscation:
 
 
 	def run(self):
+		self.L2S = local2State(self.solContent, self.json)
+		nowContent = self.L2S.preProcess()
+		self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables, preprocess")
+		self.recompileMiddleContract()
+		self.L2S.resetSolAndJson(self.solContent, self.json)
+		self.L2S.doChange()
+		'''
+		self.L2S.resetSolAndJson(self.content,  self.json)
 		self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 		nowContent = self.SDDG.doGenerate()
 		self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
@@ -72,9 +81,6 @@ class dataflowObfuscation:
 		nowContent = self.SBV.doSplit()
 		self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
 		e_time = time.time()
-		'''
-		self.NTP = noTouchPure(self.json)
-		self.NTP.run()
 		'''
 
 #unit test
