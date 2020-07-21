@@ -5,6 +5,7 @@ import json
 from noTouchPure import noTouchPure
 import random
 import copy
+import re
 
 DEFAULT_VISIBILITY = "internal"
 CORPUS_PATH = "Corpus.txt"
@@ -127,7 +128,6 @@ class local2State:
 			else:
 				sliceIndex.append(int(item[1]))
 				sliceIndex.append(int(item[2]))
-		#sliceIndex = self.filterList(sliceIndex)
 		sliceIndex.sort()	# from small to big
 		flag = 0
 		index = 0
@@ -158,23 +158,26 @@ class local2State:
 	def preProcess(self):
 		#1. find all local varibale
 		localVarList = self.findLocalVar()
-		localVarList = self.NTP.run(localVarList)
-		'''
-		for i in localVarList:
-			print(i)
-		'''
+		localVarList = self.NTP.runLocalVar(localVarList)
 		#2. Process variables with the same name
 		sameNameList = self.processSameName(localVarList)
-		#print(sameNameList)
 		#3. re-specific variables' names 
 		nowContent =  self.content
 		nowContent = self.strReplace(nowContent, sameNameList)
+		#nowContent = re.sub(r"(\s)(pure)(\s)", "    ", nowContent)
+		#nowContent = re.sub(r"(\s)(view)(\s)", "    ", nowContent)
 		return nowContent
 
 	def filterPara(self, _list):
+		temp = list()
 		result = list()
 		for i in _list:
 			if i["attributes"].get("name") == "":
+				continue
+			else:
+				temp.append(i)
+		for i in temp:
+			if i["attributes"].get("storageLocation") != "default":
 				continue
 			else:
 				result.append(i)
@@ -186,22 +189,75 @@ class local2State:
 			sPos, ePos = self.srcToPos(var["src"])
 			declareState +=  "\t"
 			declareState += self.content[sPos:ePos]
-			declareState += ";\n"
+			for index in range(ePos, len(self.content)):
+				if self.content[index] != ';':
+					declareState += self.content[index]
+				else:
+					declareState += self.content[index]
+					break
+			declareState += "\n"
 		return declareState
 
+	def strReplaceAChar(self, _str, _sPos, _ePos):
+		strList = list(_str)
+		resultStr = str()
+		for index in range(0, len(strList)):
+			if index >= _sPos and index < _ePos:
+				resultStr += " "
+			else:
+				resultStr += strList[index]
+		return resultStr
 
+
+	def overwriteDeclareState(self, _content, _list):
+		newContent = copy.deepcopy(_content)
+		for item in _list:
+			try:
+				name = item["attributes"].get("name")
+				sPos, ePos  = self.srcToPos(item["src"])
+				#ePos = ePos - len(name)
+				while newContent[ePos - 1] != ";":
+					ePos += 1
+				newContent = self.strReplaceAChar(newContent, sPos, ePos)
+			except:
+				continue
+		#print(newContent)
+		return newContent
+
+	def insertDeclareStatement(self, _content, _state):
+		contractDefine = self.findASTNode("name", "ContractDefinition")
+		sPos, ePos = self.srcToPos(contractDefine[0]["src"])
+		newContent  = _content[:ePos - 1] + _state + _content[ePos - 1:]
+		return newContent
+
+	def findLocalVar_post(self):
+		varList = self.findASTNode("name", "VariableDeclarationStatement")
+		localVarList = list()
+		for node in varList:
+			try:
+				if node["children"][0]["attributes"].get("stateVariable") == False:
+					localVarList.append(node)
+				else:
+					continue
+			except:
+				continue
+		return localVarList
 
 	def doChange(self):
+		self.NTP = noTouchPure(self.json)
 		#1. find all local varibale
 		localVarList = self.findLocalVar()
-		localVarList = self.NTP.run(localVarList)
+		localVarList = self.NTP.runLocalVar(localVarList)
+		#print(len(localVarList))
 		localVarList = self.filterPara(localVarList)
-		'''
-		for i in localVarList:
-			sPos, ePos = self.srcToPos(i["src"])
-			print(self.content[sPos:ePos])
-			#print(self.srcToPos(i["src"]))
-		'''
+		#print(len(localVarList))
 		#2. make declaration statement
-		print(self.makeDeclareState(localVarList))
+		declareState = self.makeDeclareState(localVarList)
+		#print(self.makeDeclareState(localVarList))
 		#3. Overwrite the original variable declaration statement.
+		nowContent = self.content
+		nowContent = self.overwriteDeclareState(nowContent, localVarList)
+		#print(nowContent)
+		#4. insert declare statement
+		nowContent = self.insertDeclareStatement(nowContent, declareState)
+		return nowContent
