@@ -1,8 +1,9 @@
 {
   "activateFunc": [
   		{"local2State": false},
-  		{"staticDataDynamicGenerate": true},
-  		{"literal2Exp": true},
-  		{"splitBoolVariable": true}
+  		{"staticDataDynamicGenerate": false},
+  		{"literal2Exp": false},
+  		{"splitBoolVariable": false},
+		{"arrayMergeCollapse": true}
   ]
 }

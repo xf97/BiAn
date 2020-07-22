@@ -15,6 +15,7 @@ from staticDataDynamicGenerate import staticDataDynamicGenerate
 from literal2Exp import literal2Exp
 from splitBoolVariable import splitBoolVariable
 from local2State import local2State
+from arrayMergeCollapse import arrayMergeCollapse
 import time
 
 
@@ -98,6 +99,9 @@ class dataflowObfuscation:
 			self.SBV = splitBoolVariable(self.solContent, self.json)
 			nowContent = self.SBV.doSplit()
 			self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
+		if self.isActivate("arrayMergeCollapse"):
+			self.AMC = arrayMergeCollapse(self.solContent, self.json)
+			nowContent = self.AMC.doMerge()
 		e_time = time.time()
 		print(e_time - s_time)
 
