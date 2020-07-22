@@ -64,12 +64,21 @@ class staticDataDynamicGenerate:
 		return intNodeInfor
 
 
-
+	def filterString(self, _list):
+		resultList = list()
+		for i in _list:
+			if i["attributes"].get("value") == "" and i["attributes"].get("type").split()[0] == STRING_FLAG:
+				continue
+			else:
+				resultList.append(i)
+		return resultList
 
 	def doGenerate(self):
 		#1. find each literal 
 		literalList = self.findLiteral(self.json, "name", "Literal")
 		literalList = self.NTP.run(literalList)
+		literalList = self.filterString(literalList)
+		#patch
 		#print(len(literalList))
 		#2. generate each literal's replacement
 		#2.1 declare array to store literal

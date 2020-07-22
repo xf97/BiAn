@@ -99,9 +99,12 @@ class dataflowObfuscation:
 			self.SBV = splitBoolVariable(self.solContent, self.json)
 			nowContent = self.SBV.doSplit()
 			self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
+			self.recompileMiddleContract()
+		'''
 		if self.isActivate("arrayMergeCollapse"):
 			self.AMC = arrayMergeCollapse(self.solContent, self.json)
 			nowContent = self.AMC.doMerge()
+		'''
 		e_time = time.time()
 		print(e_time - s_time)
 
