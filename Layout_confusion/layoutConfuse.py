@@ -18,6 +18,30 @@ from deleteComment import deleteComment
 import time
 
 
+colors = True # Output should be colored
+machine = sys.platform # Detecting the os of current system
+if machine.lower().startswith(('os', 'win', 'darwin', 'ios')):
+    colors = False # Colors shouldn't be displayed in mac & windows
+if not colors:
+    end = green = bad = info = ''
+    start = ' ['
+    stop = ']'
+else:
+    end = '\033[1;m'
+    green = '\033[1;32m'
+    white = "\033[1;37m"
+    blue = "\033[1;34m"
+    yellow = "\033[1;33m"
+    bad = '\033[1;31m[-]\033[1;m'
+    info = '\033[1;33m[!]\033[1;m'
+    start = ' \033[1;31m[\033[0m'
+    stop = '\033[1;31m]\033[0m'
+    backGreenFrontWhite = "\033[1;37m\033[42m"
+
+print ('''%s
+	BiAn v0.9
+%s''' % (blue, end))
+
 class layoutConfuse:
 	def __init__(self, _filepath, _jsonFile):
 		self.outputFileName = self.getOutputFileName(_filepath)
@@ -52,14 +76,14 @@ class layoutConfuse:
 	def writeStrToFile(self, _filename, _str, _step):
 		with open(_filename, "w", encoding = "utf-8") as f:
 			f.write(_str)
-		print(_step, ".... done")
+		print(("%s" + _step + ".... done" + "%s") % (yellow, end))
 
 	def recompileMiddleContract(self):
 		compileResult = os.popen("solc --ast-json --pretty-json --overwrite " + self.middleContract + " -o .")
 		#print(compileResult.read())
-		print("\rIntermediate contract is being generated.", end = " ")
+		print(("%s" + "\rIntermediate contract is being generated." + "%s") % (white, end), end = " ")
 		time.sleep(1.5)
-		print("\rIntermediate contract is being generated....done")
+		print(("%s" + "\rIntermediate contract is being generated....done" + "%s") % (white, end))
 		self.solContent = self.getContent(self.middleContract)
 		self.json = self.getJsonContent(self.middleJsonAST)
 
@@ -72,6 +96,7 @@ class layoutConfuse:
 		return True
 
 	def run(self):
+		print((("%s") + "Start layout confusion:" + ("%s")) % (backGreenFrontWhite, end))
 		if self.isActivate("deleteComment"):
 			self.DC = deleteComment(self.solContent)
 			nowContent = self.DC.doDelete()
@@ -84,6 +109,7 @@ class layoutConfuse:
 			self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
 			nowContent = self.RVN.doReplace()
 			self.writeStrToFile("temp.sol", nowContent, "Replace variable name")
+		print((("%s") + "Complete layout confusion." + ("%s")) % (backGreenFrontWhite, end))
 
 
 
