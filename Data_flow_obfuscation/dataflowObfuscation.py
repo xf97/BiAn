@@ -16,6 +16,7 @@ from literal2Exp import literal2Exp
 from splitBoolVariable import splitBoolVariable
 from local2State import local2State
 from arrayMergeCollapse import arrayMergeCollapse
+from scalar2Vector import scalar2Vector
 import time
 
 
@@ -99,6 +100,10 @@ class dataflowObfuscation:
 			nowContent = self.SBV.doSplit()
 			self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
 			self.recompileMiddleContract()
+		if self.isActivate("scalar2Vector"):
+			self.S2V = scalar2Vector(self.solContent, self.json)
+			nowContent = self.S2V.doChange()
+			self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
 		'''
 		if self.isActivate("arrayMergeCollapse"):
 			self.AMC = arrayMergeCollapse(self.solContent, self.json)

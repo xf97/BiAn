@@ -65,7 +65,9 @@
 	 "text": "!(true || false)"
 	}
   ],
- "variableNaming":  [
+ "variableNaming": [
 	"BiAnIsACodeObfuscationToolForSoliditySmartContracts", "JiuZhouIsADataSetOfEthereumBugSmartContracts", "SolidityCheckIsAStaticCodeProblemDetectionToolBasedOnRegularExpressionsAndProgramInstrumentationWhichIsDevelopedForEthereumSmartContracts"
- ]
+ ],
+ "insertStructPrefix": "\tstruct scalar2Vector {\n\t\t",
+ "insertStructSuffix": "\n\tscalar2Vector s2c;\n"
 }
