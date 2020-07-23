@@ -73,7 +73,6 @@ class dataflowObfuscation:
 				continue
 		return True
 
-
 	def run(self):
 		s_time = time.time();
 		if self.isActivate("local2State"):

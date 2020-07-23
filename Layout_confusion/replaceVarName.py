@@ -110,7 +110,7 @@ class replaceVarName:
 		sha1 = hashlib.sha1()
 		sha1.update(_str.encode("utf-8") + str(time.time()).encode("utf-8"))
 		res = sha1.hexdigest()
-		return "O0" + res
+		return "Ox" + res
 
 
 	def replace1Name(self, _content, _name):

@@ -1,7 +1,7 @@
 {
   "attributes":
   {
-    "absolutePath": "integerDivision.sol",
+    "absolutePath": "temp.sol",
     "exportedSymbols":
     {
       "getWageNumber":
@@ -74,12 +74,12 @@
               },
               "id": 2,
               "name": "ElementaryTypeName",
-              "src": "264:7:0"
+              "src": "46:7:0"
             }
           ],
           "id": 3,
           "name": "VariableDeclaration",
-          "src": "264:26:0"
+          "src": "46:26:0"
         },
         {
           "attributes":
@@ -105,12 +105,12 @@
               },
               "id": 4,
               "name": "ElementaryTypeName",
-              "src": "296:7:0"
+              "src": "73:7:0"
             }
           ],
           "id": 5,
           "name": "VariableDeclaration",
-          "src": "296:24:0"
+          "src": "73:24:0"
         },
         {
           "attributes":
@@ -137,12 +137,12 @@
               },
               "id": 6,
               "name": "ElementaryTypeName",
-              "src": "326:7:0"
+              "src": "98:7:0"
             }
           ],
           "id": 7,
           "name": "VariableDeclaration",
-          "src": "326:19:0"
+          "src": "98:19:0"
         },
         {
           "attributes":
@@ -175,7 +175,7 @@
               "children": [],
               "id": 8,
               "name": "ParameterList",
-              "src": "367:2:0"
+              "src": "129:2:0"
             },
             {
               "attributes":
@@ -188,7 +188,7 @@
               "children": [],
               "id": 9,
               "name": "ParameterList",
-              "src": "376:0:0"
+              "src": "138:0:0"
             },
             {
               "children":
@@ -223,7 +223,7 @@
                           },
                           "id": 10,
                           "name": "Identifier",
-                          "src": "386:9:0"
+                          "src": "139:9:0"
                         },
                         {
                           "attributes":
@@ -241,17 +241,17 @@
                           },
                           "id": 11,
                           "name": "Literal",
-                          "src": "398:3:0"
+                          "src": "151:3:0"
                         }
                       ],
                       "id": 12,
                       "name": "Assignment",
-                      "src": "386:15:0"
+                      "src": "139:15:0"
                     }
                   ],
                   "id": 13,
                   "name": "ExpressionStatement",
-                  "src": "386:15:0"
+                  "src": "139:15:0"
                 },
                 {
                   "children":
@@ -283,7 +283,7 @@
                           },
                           "id": 14,
                           "name": "Identifier",
-                          "src": "411:11:0"
+                          "src": "155:11:0"
                         },
                         {
                           "attributes":
@@ -301,17 +301,17 @@
                           },
                           "id": 15,
                           "name": "Literal",
-                          "src": "425:1:0"
+                          "src": "169:1:0"
                         }
                       ],
                       "id": 16,
                       "name": "Assignment",
-                      "src": "411:15:0"
+                      "src": "155:15:0"
                     }
                   ],
                   "id": 17,
                   "name": "ExpressionStatement",
-                  "src": "411:15:0"
+                  "src": "155:15:0"
                 },
                 {
                   "children":
@@ -343,7 +343,7 @@
                           },
                           "id": 18,
                           "name": "Identifier",
-                          "src": "436:4:0"
+                          "src": "171:4:0"
                         },
                         {
                           "attributes":
@@ -373,32 +373,32 @@
                               },
                               "id": 19,
                               "name": "Identifier",
-                              "src": "443:3:0"
+                              "src": "178:3:0"
                             }
                           ],
                           "id": 20,
                           "name": "MemberAccess",
-                          "src": "443:10:0"
+                          "src": "178:10:0"
                         }
                       ],
                       "id": 21,
                       "name": "Assignment",
-                      "src": "436:17:0"
+                      "src": "171:17:0"
                     }
                   ],
                   "id": 22,
                   "name": "ExpressionStatement",
-                  "src": "436:17:0"
+                  "src": "171:17:0"
                 }
               ],
               "id": 23,
               "name": "Block",
-              "src": "376:84:0"
+              "src": "138:52:0"
             }
           ],
           "id": 24,
           "name": "FunctionDefinition",
-          "src": "356:104:0"
+          "src": "118:72:0"
         },
         {
           "attributes":
@@ -422,7 +422,7 @@
               "children": [],
               "id": 25,
               "name": "ParameterList",
-              "src": "488:0:0"
+              "src": "208:0:0"
             },
             {
               "children":
@@ -470,7 +470,7 @@
                           },
                           "id": 26,
                           "name": "Identifier",
-                          "src": "498:7:0"
+                          "src": "209:7:0"
                         },
                         {
                           "attributes":
@@ -518,12 +518,12 @@
                                   },
                                   "id": 27,
                                   "name": "Identifier",
-                                  "src": "506:3:0"
+                                  "src": "217:3:0"
                                 }
                               ],
                               "id": 28,
                               "name": "MemberAccess",
-                              "src": "506:10:0"
+                              "src": "217:10:0"
                             },
                             {
                               "attributes":
@@ -539,37 +539,37 @@
                               },
                               "id": 29,
                               "name": "Identifier",
-                              "src": "520:4:0"
+                              "src": "231:4:0"
                             }
                           ],
                           "id": 30,
                           "name": "BinaryOperation",
-                          "src": "506:18:0"
+                          "src": "217:18:0"
                         }
                       ],
                       "id": 31,
                       "name": "FunctionCall",
-                      "src": "498:27:0"
+                      "src": "209:27:0"
                     }
                   ],
                   "id": 32,
                   "name": "ExpressionStatement",
-                  "src": "498:27:0"
+                  "src": "209:27:0"
                 },
                 {
                   "id": 33,
                   "name": "PlaceholderStatement",
-                  "src": "535:1:0"
+                  "src": "237:1:0"
                 }
               ],
               "id": 34,
               "name": "Block",
-              "src": "488:55:0"
+              "src": "208:32:0"
             }
           ],
           "id": 35,
           "name": "ModifierDefinition",
-          "src": "470:73:0"
+          "src": "190:50:0"
         },
         {
           "attributes":
@@ -614,17 +614,17 @@
                       },
                       "id": 36,
                       "name": "ElementaryTypeName",
-                      "src": "575:7:0"
+                      "src": "262:7:0"
                     }
                   ],
                   "id": 37,
                   "name": "VariableDeclaration",
-                  "src": "575:13:0"
+                  "src": "262:13:0"
                 }
               ],
               "id": 38,
               "name": "ParameterList",
-              "src": "574:15:0"
+              "src": "261:15:0"
             },
             {
               "attributes":
@@ -637,7 +637,7 @@
               "children": [],
               "id": 41,
               "name": "ParameterList",
-              "src": "608:0:0"
+              "src": "295:0:0"
             },
             {
               "attributes":
@@ -660,12 +660,12 @@
                   },
                   "id": 39,
                   "name": "Identifier",
-                  "src": "599:9:0"
+                  "src": "286:9:0"
                 }
               ],
               "id": 40,
               "name": "ModifierInvocation",
-              "src": "599:9:0"
+              "src": "286:9:0"
             },
             {
               "children":
@@ -700,7 +700,7 @@
                           },
                           "id": 42,
                           "name": "Identifier",
-                          "src": "618:9:0"
+                          "src": "296:9:0"
                         },
                         {
                           "attributes":
@@ -716,27 +716,27 @@
                           },
                           "id": 43,
                           "name": "Identifier",
-                          "src": "630:5:0"
+                          "src": "308:5:0"
                         }
                       ],
                       "id": 44,
                       "name": "Assignment",
-                      "src": "618:17:0"
+                      "src": "296:17:0"
                     }
                   ],
                   "id": 45,
                   "name": "ExpressionStatement",
-                  "src": "618:17:0"
+                  "src": "296:17:0"
                 }
               ],
               "id": 46,
               "name": "Block",
-              "src": "608:34:0"
+              "src": "295:20:0"
             }
           ],
           "id": 47,
           "name": "FunctionDefinition",
-          "src": "553:89:0"
+          "src": "240:75:0"
         },
         {
           "attributes":
@@ -781,17 +781,17 @@
                       },
                       "id": 48,
                       "name": "ElementaryTypeName",
-                      "src": "676:7:0"
+                      "src": "339:7:0"
                     }
                   ],
                   "id": 49,
                   "name": "VariableDeclaration",
-                  "src": "676:11:0"
+                  "src": "339:11:0"
                 }
               ],
               "id": 50,
               "name": "ParameterList",
-              "src": "675:13:0"
+              "src": "338:13:0"
             },
             {
               "attributes":
@@ -804,7 +804,7 @@
               "children": [],
               "id": 53,
               "name": "ParameterList",
-              "src": "707:0:0"
+              "src": "370:0:0"
             },
             {
               "attributes":
@@ -827,12 +827,12 @@
                   },
                   "id": 51,
                   "name": "Identifier",
-                  "src": "698:9:0"
+                  "src": "361:9:0"
                 }
               ],
               "id": 52,
               "name": "ModifierInvocation",
-              "src": "698:9:0"
+              "src": "361:9:0"
             },
             {
               "children":
@@ -867,7 +867,7 @@
                           },
                           "id": 54,
                           "name": "Identifier",
-                          "src": "717:11:0"
+                          "src": "371:11:0"
                         },
                         {
                           "attributes":
@@ -883,27 +883,27 @@
                           },
                           "id": 55,
                           "name": "Identifier",
-                          "src": "731:3:0"
+                          "src": "385:3:0"
                         }
                       ],
                       "id": 56,
                       "name": "Assignment",
-                      "src": "717:17:0"
+                      "src": "371:17:0"
                     }
                   ],
                   "id": 57,
                   "name": "ExpressionStatement",
-                  "src": "717:17:0"
+                  "src": "371:17:0"
                 }
               ],
               "id": 58,
               "name": "Block",
-              "src": "707:34:0"
+              "src": "370:20:0"
             }
           ],
           "id": 59,
           "name": "FunctionDefinition",
-          "src": "652:89:0"
+          "src": "315:75:0"
         },
         {
           "attributes":
@@ -948,17 +948,17 @@
                       },
                       "id": 60,
                       "name": "ElementaryTypeName",
-                      "src": "774:7:0"
+                      "src": "413:7:0"
                     }
                   ],
                   "id": 61,
                   "name": "VariableDeclaration",
-                  "src": "774:17:0"
+                  "src": "413:17:0"
                 }
               ],
               "id": 62,
               "name": "ParameterList",
-              "src": "773:19:0"
+              "src": "412:19:0"
             },
             {
               "children":
@@ -986,17 +986,17 @@
                       },
                       "id": 65,
                       "name": "ElementaryTypeName",
-                      "src": "826:7:0"
+                      "src": "465:7:0"
                     }
                   ],
                   "id": 66,
                   "name": "VariableDeclaration",
-                  "src": "826:7:0"
+                  "src": "465:7:0"
                 }
               ],
               "id": 67,
               "name": "ParameterList",
-              "src": "825:9:0"
+              "src": "464:9:0"
             },
             {
               "attributes":
@@ -1019,12 +1019,12 @@
                   },
                   "id": 63,
                   "name": "Identifier",
-                  "src": "807:9:0"
+                  "src": "446:9:0"
                 }
               ],
               "id": 64,
               "name": "ModifierInvocation",
-              "src": "807:9:0"
+              "src": "446:9:0"
             },
             {
               "children":
@@ -1062,12 +1062,12 @@
                           },
                           "id": 68,
                           "name": "ElementaryTypeName",
-                          "src": "1153:7:0"
+                          "src": "475:7:0"
                         }
                       ],
                       "id": 69,
                       "name": "VariableDeclaration",
-                      "src": "1153:16:0"
+                      "src": "475:16:0"
                     },
                     {
                       "attributes":
@@ -1101,7 +1101,7 @@
                           },
                           "id": 70,
                           "name": "Identifier",
-                          "src": "1172:9:0"
+                          "src": "494:9:0"
                         },
                         {
                           "attributes":
@@ -1117,17 +1117,17 @@
                           },
                           "id": 71,
                           "name": "Identifier",
-                          "src": "1184:11:0"
+                          "src": "506:11:0"
                         }
                       ],
                       "id": 72,
                       "name": "BinaryOperation",
-                      "src": "1172:23:0"
+                      "src": "494:23:0"
                     }
                   ],
                   "id": 73,
                   "name": "VariableDeclarationStatement",
-                  "src": "1153:42:0"
+                  "src": "475:42:0"
                 },
                 {
                   "attributes":
@@ -1168,7 +1168,7 @@
                           },
                           "id": 74,
                           "name": "Identifier",
-                          "src": "1212:8:0"
+                          "src": "525:8:0"
                         },
                         {
                           "attributes":
@@ -1184,35 +1184,35 @@
                           },
                           "id": 75,
                           "name": "Identifier",
-                          "src": "1223:9:0"
+                          "src": "536:9:0"
                         }
                       ],
                       "id": 76,
                       "name": "BinaryOperation",
-                      "src": "1212:20:0"
+                      "src": "525:20:0"
                     }
                   ],
                   "id": 77,
                   "name": "Return",
-                  "src": "1205:27:0"
+                  "src": "518:27:0"
                 }
               ],
               "id": 78,
               "name": "Block",
-              "src": "835:404:0"
+              "src": "474:73:0"
             }
           ],
           "id": 79,
           "name": "FunctionDefinition",
-          "src": "751:488:0"
+          "src": "390:157:0"
         }
       ],
       "id": 80,
       "name": "ContractDefinition",
-      "src": "235:1006:0"
+      "src": "22:526:0"
     }
   ],
   "id": 81,
   "name": "SourceUnit",
-  "src": "0:1241:0"
+  "src": "0:548:0"
 }

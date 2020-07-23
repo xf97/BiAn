@@ -13,14 +13,24 @@ import sys
 import json
 from replaceVarName import replaceVarName
 from splitFunction import splitFunction
+from changeFormat import changeFormat
+from deleteComment import deleteComment
+import time
 
 
 class layoutConfuse:
 	def __init__(self, _filepath, _jsonFile):
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
-		self.json = self.getJsonContent(_jsonFile)
-		self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
+		self.json = self.getJsonContent(_jsonFile)		
+		self.middleContract = "temp.sol"
+		self.middleJsonAST = "temp.sol_json.ast"
+		self.configPath = "Configuration.json"
+		self.getConfig()
+	
+	def getConfig(self):
+		config = self.getJsonContent(self.configPath)
+		self.featureList = config["activateFunc"]
 
 	def getContent(self, _filepath):
 		with open(_filepath, "r", encoding = "utf-8") as f:
@@ -39,33 +49,50 @@ class layoutConfuse:
 		jsonDict = json.loads(jsonStr)
 		return jsonDict
 
-	'''
-	def doReplace(self):
-		replacedContent = self.RVN.doReplace()
-		return replacedContent
-	'''
-
-	def writeStrToFile(self, _filename, _str):
+	def writeStrToFile(self, _filename, _str, _step):
 		with open(_filename, "w", encoding = "utf-8") as f:
 			f.write(_str)
-		print(_filename, "is writed.")
+		print(_step, ".... done")
 
-	#first - split contract
-	#second - split function
-	#third - replace name
+	def recompileMiddleContract(self):
+		compileResult = os.popen("solc --ast-json --pretty-json --overwrite " + self.middleContract + " -o .")
+		#print(compileResult.read())
+		print("\rIntermediate contract is being generated.", end = " ")
+		time.sleep(1.5)
+		print("\rIntermediate contract is being generated....done")
+		self.solContent = self.getContent(self.middleContract)
+		self.json = self.getJsonContent(self.middleJsonAST)
+
+	def isActivate(self, _name):
+		for _dict in self.featureList:
+			try:
+				return _dict[_name]
+			except:
+				continue
+		return True
+
 	def run(self):
-		#print(self.solContent)
-		#print(self.outputFileName)
-		#print(self.json)
-		'''
-		replacedNameContent = self.RVN.doReplace()
-		self.writeStrToFile("testCase/temp.sol", replacedNameContent)
-		'''
-		#print(self.solContent.find("uint256") + len("uint256"))
-		print(self.solContent[376:(376+84)])
+		if self.isActivate("deleteComment"):
+			self.DC = deleteComment(self.solContent)
+			nowContent = self.DC.doDelete()
+		if self.isActivate("changeFormat"):
+			self.CF = changeFormat(nowContent)
+			nowContent = self.CF.doChange()
+			self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
+			self.recompileMiddleContract()
+		if self.isActivate("replaceVarName"):
+			self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
+			nowContent = self.RVN.doReplace()
+			self.writeStrToFile("temp.sol", nowContent, "Replace variable name")
+
 
 
 #unit test
 if __name__ == "__main__":
-	lc = layoutConfuse("testCase/testCase1.sol", "testCase/testCase1_json.ast")
-	lc.run()
+	if len(sys.argv) != 3:
+		print("wrong parameters.")
+	else:
+		lc = layoutConfuse(sys.argv[1], sys.argv[2])
+		lc.run()
+		#print(dfo.solContent)
+
