@@ -1,7 +1,0 @@
-{
-  "activateFunc": [
-  		{"replaceVarName": true},
-  		{"changeFormat": true},
-  		{"deleteComment": true}
-  ]
-}

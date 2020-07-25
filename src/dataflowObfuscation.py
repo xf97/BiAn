@@ -19,6 +19,26 @@ from arrayMergeCollapse import arrayMergeCollapse
 from scalar2Vector import scalar2Vector
 import time
 
+colors = True # Output should be colored
+machine = sys.platform # Detecting the os of current system
+if machine.lower().startswith(('os', 'win', 'darwin', 'ios')):
+    colors = False # Colors shouldn't be displayed in mac & windows
+if not colors:
+    end = green = bad = info = ''
+    start = ' ['
+    stop = ']'
+else:
+    end = '\033[1;m'
+    green = '\033[1;32m'
+    white = "\033[1;37m"
+    blue = "\033[1;34m"
+    yellow = "\033[1;33m"
+    bad = '\033[1;31m[-]\033[1;m'
+    info = '\033[1;33m[!]\033[1;m'
+    start = ' \033[1;31m[\033[0m'
+    stop = '\033[1;31m]\033[0m'
+    backGreenFrontWhite = "\033[1;37m\033[42m"
+
 
 class dataflowObfuscation:
 	def __init__(self, _filepath, _jsonFile):
@@ -51,14 +71,14 @@ class dataflowObfuscation:
 	def writeStrToFile(self, _filename, _str, _step):
 		with open(_filename, "w", encoding = "utf-8") as f:
 			f.write(_str)
-		print(_step, ".... done")
+		print(("%s" + _step + ".... done" + "%s") % (yellow, end))
 
 	def recompileMiddleContract(self):
 		compileResult = os.popen("solc --ast-json --pretty-json --overwrite " + self.middleContract + " -o .")
 		#print(compileResult.read())
-		print("\rIntermediate contract is being generated.", end = " ")
+		print(("%s" + "\rIntermediate contract is being generated." + "%s") % (white, end), end = " ")
 		time.sleep(1.5)
-		print("\rIntermediate contract is being generated....done")
+		print(("%s" + "\rIntermediate contract is being generated....done" + "%s") % (white, end))
 		self.solContent = self.getContent(self.middleContract)
 		self.json = self.getJsonContent(self.middleJsonAST)
 
@@ -75,7 +95,7 @@ class dataflowObfuscation:
 		return True
 
 	def run(self):
-		s_time = time.time();
+		print((("%s") + "Start data flow confusion:" + ("%s")) % (backGreenFrontWhite, end))
 		if self.isActivate("local2State"):
 			self.L2S = local2State(self.solContent, self.json)
 			nowContent = self.L2S.preProcess()
@@ -104,13 +124,14 @@ class dataflowObfuscation:
 			self.S2V = scalar2Vector(self.solContent, self.json)
 			nowContent = self.S2V.doChange()
 			self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
+			self.recompileMiddleContract()
 		'''
 		if self.isActivate("arrayMergeCollapse"):
 			self.AMC = arrayMergeCollapse(self.solContent, self.json)
 			nowContent = self.AMC.doMerge()
 		'''
-		e_time = time.time()
-		print(e_time - s_time)
+		print((("%s") + "Complete data flow confusion." + ("%s")) % (backGreenFrontWhite, end))
+
 
 #unit test
 if __name__ == "__main__":
