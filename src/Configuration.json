@@ -1,6 +1,6 @@
 {
   "activateFunc": [
-  		{"local2State": true},
+  		{"local2State": false},
   		{"staticDataDynamicGenerate": true},
   		{"literal2Exp": true},
   		{"splitBoolVariable": true},
