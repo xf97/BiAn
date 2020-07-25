@@ -69,5 +69,5 @@
 	"BiAnIsACodeObfuscationToolForSoliditySmartContracts", "JiuZhouIsADataSetOfEthereumBugSmartContracts", "SolidityCheckIsAStaticCodeProblemDetectionToolBasedOnRegularExpressionsAndProgramInstrumentationWhichIsDevelopedForEthereumSmartContracts"
  ],
  "insertStructPrefix": "\tstruct scalar2Vector {\n\t\t",
- "insertStructSuffix": "\n\tscalar2Vector s2c;\n"
+ "insertStructSuffix": "\n\tscalar2Vector s2c = scalar2Vector("
 }
