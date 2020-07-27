@@ -277,7 +277,7 @@ class scalar2Vector:
 	def doChange(self):
 		#1. 获取目标状态变量信息
 		infoList = self.findTargetVar()
-		print(infoList)
+		#print(infoList)
 		#2. 在合约内部声明结构体——语料库
 		declareStatement = self.makeDeclareStatement(infoList)
 		#print(declareStatement)

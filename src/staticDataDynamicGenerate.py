@@ -124,7 +124,9 @@ class staticDataDynamicGenerate:
 			(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
 			if _type == INT_FLAG:
 				callStatement = self.makeCallStatement(arrayList, _type, value)
+				#print(callStatement)
 				callStatement = self.remakeCallStatement(callStatement, startPos, endPos, intTypeList)
+				#print(callStatement)
 			else:
 				callStatement = self.makeCallStatement(arrayList, _type, value)
 			insertList.append([callStatement, startPos, endPos])
@@ -136,12 +138,24 @@ class staticDataDynamicGenerate:
 	def remakeCallStatement(self, _state, _startPos, _endPos, _typeList):
 		temp = self.findLiteral(self.json, "name", "VariableDeclaration");
 		temp.extend(self.findLiteral(self.json, "name", "Assignment"))
+		temp1 = self.findLiteral(self.json, "name", "BinaryOperation")
 		for i in temp:
 			sPos = self.listToInt([i["src"].split(":")[0]])
 			ePos = self.listToInt(i["src"].split(":"))
 			if sPos <= _startPos and ePos >= _endPos:
 				_type = i["attributes"]["type"]
 				return " " + _type + "(" + _state.lstrip() + ")"
+			else:
+				continue
+		for i in temp1:
+			sPos = self.listToInt([i["src"].split(":")[0]])
+			ePos = self.listToInt(i["src"].split(":"))
+			if sPos <= _startPos and ePos >= _endPos:
+				return " uint256(" + _state.lstrip() + ")"
+			else:
+				continue
+		return str()
+
 				#return " " + _type + "(" + _state.lstrip() + ")"
 
 
