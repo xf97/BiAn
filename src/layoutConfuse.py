@@ -42,6 +42,8 @@ else:
 
 class layoutConfuse:
 	def __init__(self, _filepath, _jsonFile):
+		self.filePath = _filepath
+		self.jsonPath = _jsonFile
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
 		self.json = self.getJsonContent(_jsonFile)		
@@ -99,7 +101,9 @@ class layoutConfuse:
 			try:
 				self.DC = deleteComment(self.solContent)
 				nowContent = self.DC.doDelete()
-			except:
+			except:	
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Delete comments...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("changeFormat"):
 			try:
@@ -108,6 +112,8 @@ class layoutConfuse:
 				self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
 				self.recompileMiddleContract()
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Disrupt the formatting...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("replaceVarName"):
 			try:
@@ -115,6 +121,8 @@ class layoutConfuse:
 				nowContent = self.RVN.doReplace()
 				self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Replace variable name...Exception occurs" + "%s") % (bad, end))
 		print((("%s") + "Complete layout confusion." + ("%s")) % (backGreenFrontWhite, end))
 		print(("%s" + "Complete layout confusion and data flow confusion! The obfuscation result is stored in file " + ("%s") + "." + ("%s")) % (backBlueFrontWhite, self.outputFileName, end))

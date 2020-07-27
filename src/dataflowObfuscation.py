@@ -42,6 +42,8 @@ else:
 
 class dataflowObfuscation:
 	def __init__(self, _filepath, _jsonFile):
+		self.filePath = _filepath
+		self.jsonPath = _jsonFile
 		self.outputFileName = self.getOutputFileName(_filepath)
 		self.solContent = self.getContent(_filepath)
 		self.json = self.getJsonContent(_jsonFile)
@@ -108,6 +110,8 @@ class dataflowObfuscation:
 				self.recompileMiddleContract()
 			except:
 				#nowContent = solContent
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert local variables to state variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("staticDataDynamicGenerate"):
 			try:
@@ -116,6 +120,8 @@ class dataflowObfuscation:
 				self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
 				self.recompileMiddleContract()
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Dynamically generate static data...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("literal2Exp"):
 			try:
@@ -124,6 +130,8 @@ class dataflowObfuscation:
 				self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
 				self.recompileMiddleContract()
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert integer literals to arithmetic expressions...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("splitBoolVariable"):
 			try:
@@ -132,6 +140,8 @@ class dataflowObfuscation:
 				self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
 				self.recompileMiddleContract()
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("scalar2Vector"):
 			try:
@@ -140,6 +150,8 @@ class dataflowObfuscation:
 				self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
 				self.recompileMiddleContract()
 			except:
+				self.solContent = self.getContent(self.filePath)
+				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Scalar to vector...Exception occurs" + "%s") % (bad, end))
 		'''
 		if self.isActivate("arrayMergeCollapse"):

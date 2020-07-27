@@ -56,7 +56,7 @@ class scalar2Vector:
 				if node["attributes"].get("type") == BOOL_FLAG:
 					temp.append(node)
 				elif node["attributes"].get("type").find(INT_FLAG) != -1 and \
-				node["attributes"].get("type").find("[") == -1:
+				node["attributes"].get("type").find("[") == -1 and node["attributes"].get("type").find("mapping") == -1:
 					temp.append(node)
 				elif node["attributes"].get("type") == ADDRESS_FLAG or \
 				node["attributes"].get("type") == ADDRESS_PAYABLE_FLAG:
@@ -277,6 +277,7 @@ class scalar2Vector:
 	def doChange(self):
 		#1. 获取目标状态变量信息
 		infoList = self.findTargetVar()
+		print(infoList)
 		#2. 在合约内部声明结构体——语料库
 		declareStatement = self.makeDeclareStatement(infoList)
 		#print(declareStatement)
