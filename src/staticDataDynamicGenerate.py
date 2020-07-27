@@ -144,7 +144,7 @@ class staticDataDynamicGenerate:
 					callStatement = self.makeCallStatement(arrayList, _type, value)
 					#print(callStatement, "****")
 					callStatement = self.remakeCallStatement(callStatement, startPos, endPos, intTypeList)
-					#print(callStatement)
+					#print(callStatement, "lalala")
 				else:
 					callStatement = self.makeCallStatement(arrayList, _type, value)
 				insertList.append([callStatement, startPos, endPos])
@@ -220,14 +220,15 @@ class staticDataDynamicGenerate:
 		flag = self.reMakeType(_type)
 		for state in _array:
 			if flag == state.split()[0]:
-				#print("hello", flag, _type, _type == BOOL_FLAG, state)
 				valueList = self.getArrayElement(state, _type)
+				#print(valueList)
 				for index in range(len(valueList)):
 					if str(_value) == valueList[index] and _type == INT_FLAG:
 						return " getIntFunc(" + str(index) + ")"
 					elif str(_value) == valueList[index] and _type == ADDRESS_FLAG:
 						return " getAddrFunc(" + str(index) + ")"
-					elif  _type == STRING_FLAG and  _value == valueList[index].strip("\""):
+					elif  _type == STRING_FLAG and _value == valueList[index].strip("\""):
+						#print(_value, valueList[index])
 						return " getStrFunc(" + str(index) + ")"
 					elif _type == BOOL_FLAG and str(_value) == valueList[index]:
 						#print(str(_value), valueList[index])
@@ -244,7 +245,7 @@ class staticDataDynamicGenerate:
 			for i in re.finditer(r"((0x)|(0X))?(\w){39,41}", temp):
 				result.append(i.group())
 		elif _type == STRING_FLAG:
-			for i in re.finditer(r"(\")(.)*(\")", temp):
+			for i in re.finditer(r"(\")(.)*?(\")", temp, re.S):
 				result.append(i.group())
 		elif _type == BOOL_FLAG:
 			for i in re.finditer(r"((false)|(true))", temp):
