@@ -16,8 +16,8 @@ class changeFormat:
 		return re.sub(pattern, "", _content)
 
 	def reSubS(self, _content):
-		pattern = r"(\s){2,}"
-		return re.sub(pattern, "", _content)
+		pattern = r"(\s){1,}"
+		return re.sub(pattern, " ", _content)
 
 	def doChange(self):
 		nowContent = self.content
