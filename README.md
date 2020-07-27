@@ -43,6 +43,8 @@ Before obfuscation:
 After confuscation:
 ![afterConfuse](afterConfuse.png)
 
+The obfuscated contract can still be compiled (no errors or warnings).
+
 ## Possible use 
 We hope that **BiAn** can play a role in the following aspects:
 + Enhance bug smart contracts.
