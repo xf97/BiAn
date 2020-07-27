@@ -73,13 +73,28 @@ class staticDataDynamicGenerate:
 				resultList.append(i)
 		return resultList
 
+	def filterOperation(self, _list):
+		resultList = list()
+		operationNode = self.findLiteral(self.json, "name", "BinaryOperation")
+		for node in _list:
+			literalSPos = self.listToInt([node["src"].split(":")[0]])
+			literalEPos = self.listToInt(node["src"].split(":"))
+			for i in operationNode:
+				sPos = self.listToInt([i["src"].split(":")[0]])
+				ePos = self.listToInt(i["src"].split(":"))
+				if literalSPos <= sPos and literalEPos >= ePos:
+					continue
+				else:
+					resultList.append(node)
+		return resultList
+
+
 	def doGenerate(self):
 		#1. find each literal 
 		literalList = self.findLiteral(self.json, "name", "Literal")
 		literalList = self.NTP.run(literalList)
 		literalList = self.filterString(literalList)
-		#patch
-		#print(len(literalList))
+		literalList = self.filterOperation(literalList)
 		#2. generate each literal's replacement
 		#2.1 declare array to store literal
 		typeList = self.getLiteralType(literalList)
@@ -130,8 +145,6 @@ class staticDataDynamicGenerate:
 			else:
 				callStatement = self.makeCallStatement(arrayList, _type, value)
 			insertList.append([callStatement, startPos, endPos])
-			#nowContent = re.sub(r"=(\s)*" + str(value) + r"(\s)*;", callStatement, nowContent)
-		#print(insertList)
 		nowContent = self.strReplace(nowContent, insertList)
 		return nowContent
 
@@ -151,7 +164,12 @@ class staticDataDynamicGenerate:
 			sPos = self.listToInt([i["src"].split(":")[0]])
 			ePos = self.listToInt(i["src"].split(":"))
 			if sPos <= _startPos and ePos >= _endPos:
-				return " uint256(" + _state.lstrip() + ")"
+				_type = i["children"][0]["attributes"]["type"]
+				#print(_state, _type)
+				if _type.find("int") == -1:
+					return _state
+				else:
+					return " " + _type + "(" + _state.lstrip() + ")"
 			else:
 				continue
 		return str()

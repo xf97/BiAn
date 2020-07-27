@@ -26,12 +26,4 @@ contract signednessError{
         msg.sender.transfer(uint(amount));
         transferred [msg.sender] = true ;
     }
-	function getBoolFunc(uint256 index) internal view returns(bool){
- 		return _bool_constant[index];
- 	}
-	function getIntFunc(uint256 index) internal view returns(uint256){
- 		return _integer_constant[index];
- 	}
-	bool[] public _bool_constant = [true];
-	uint256[] public _integer_constant = [1000000000000000000, 0];
 }

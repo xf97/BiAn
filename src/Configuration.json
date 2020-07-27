@@ -5,9 +5,9 @@
   		{"literal2Exp": true},
   		{"splitBoolVariable": true},
 		{"arrayMergeCollapse": true},
-		{"scalar2Vector": true},
-  		{"replaceVarName": true},
-  		{"changeFormat": true},
-  		{"deleteComment": true}
+		{"scalar2Vector": false},
+  		{"replaceVarName": false},
+  		{"changeFormat": false},
+  		{"deleteComment": false}
   ]
 }
