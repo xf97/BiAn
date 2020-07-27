@@ -45,6 +45,15 @@ After confuscation:
 
 The obfuscated contract can still be compiled (no errors or warnings).
 
+## Input, output, and limitation
+**BiAn**'s input: solFile(.sol) and its corresponding jsonAstFile(.json_ast). Users can use the *solc* compiler to generate the corresponding *jsonAst* file.
+
+**BiAn**'s output: The contract after code obfuscation(.sol).
+
+Limited by our technical level, the number of currently available tools and test cases, **BiAn** still has the following limitations:
+1. **BiAn** cannot handle the solFile that contains multiple contracts.
+2. **BiAn** may run abnormally when it confuses a contract. We welcome users to submit *bug* issues.
+
 ## Possible use 
 We hope that **BiAn** can play a role in the following aspects:
 + Enhance bug smart contracts.
