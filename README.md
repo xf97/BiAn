@@ -2,19 +2,30 @@
 ![logo](BiAnLogo.png)
 
 **BiAn** is a source code level code obfuscation tool developed for Solidity smart contracts. We will obfuscate the Solidity smart contract from the following three aspects:
-+ **Layout obfuscation**. In this aspect, I have completed the development of *variable name replacement*, and other functions will be gradually launched.
-+ **Data flow obfuscation**. In this aspect, I have completed the development of *Dynamic Generate Static Data* and *Convert Integer Literals to Arithmetic Expressions*, and other functions will also be gradually introduced.
++ **Layout obfuscation**. 
++ **Data flow obfuscation**. 
 + **Control flow obfuscation**. This aspect will be developed by the project collaborator *ZhangMeng*.
 
 ## Usage
 Enter the following instruction in the terminal (eg., ubuntu os):
 ```
 git clone https://github.com/xf97/BiAn
-cd BiAn
-python main.py testCase.sol testCase.sol_json.ast
+cd BiAn/src
+python main.py yourContract.sol yourContract.sol's_json.ast
 ```
-
 and you're done.
+
+## Feature completion status.
++ **Layout obfuscation**:
+    1. *Delete comments*.
+    2. *Disrupt the formatting*.
+    3. *Replace variable's name*.
++ **Data flow obfuscation**.
+    1. *Convert local variables to state variables*. This feature is turned off by default, because changing local variables to state variables in *Solidity* may cause compile error in the *pure* or *view* function. User can manually modify the configuration file to turn up this feature.
+    2. *Dynamically generate static data*.
+    3. *Convert integer literals to arithmetic expressions*.
+    4. *Split boolean variables*.
+    5. *Scalar to vector*.
 
 ## Possible use 
 We hope that **BiAn** can play a role in the following aspects:

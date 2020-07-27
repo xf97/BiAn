@@ -37,6 +37,7 @@ else:
     start = ' \033[1;31m[\033[0m'
     stop = '\033[1;31m]\033[0m'
     backGreenFrontWhite = "\033[1;37m\033[42m"
+    backBlueFrontWhite = "\033[1;37m\033[44m"
 
 
 class layoutConfuse:
@@ -105,8 +106,9 @@ class layoutConfuse:
 		if self.isActivate("replaceVarName"):
 			self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
 			nowContent = self.RVN.doReplace()
-			self.writeStrToFile("temp.sol", nowContent, "Replace variable name")
+			self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
 		print((("%s") + "Complete layout confusion." + ("%s")) % (backGreenFrontWhite, end))
+		print(("%s" + "Complete layout confusion and data flow confusion! The obfuscation result is stored in file " + ("%s") + "." + ("%s")) % (backBlueFrontWhite, self.outputFileName, end))
 
 
 
