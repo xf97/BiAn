@@ -15,7 +15,8 @@ python main.py yourContract.sol yourContract.sol's_json.ast
 ```
 and you're done.
 
-## Feature completion status.
+## Feature completion status
+Feature completed:
 + **Layout obfuscation**:
     1. *Delete comments*.
     2. *Disrupt the formatting*.
@@ -26,6 +27,21 @@ and you're done.
     3. *Convert integer literals to arithmetic expressions*.
     4. *Split boolean variables*.
     5. *Scalar to vector*.
+
+The configuration file (*Configuration.json*) is a json file, and users can turn on or off various functions by modifying this file.
+
+The following features' development has been stopped due to current restrictions. Uncompleted features:
++ **Data flow obfuscation**.
+    1. *Collapse and merge arrays*.
+    2. *Split functions and contracts*.
+
+## An example
+Use **BiAn** (default configuration) to obfuscate the following contract.
+Before obfuscation:
+![beforeConfuse](beforeConfuse.png)
+
+After confuscation:
+![afterConfuse](afterConfuse.png)
 
 ## Possible use 
 We hope that **BiAn** can play a role in the following aspects:
