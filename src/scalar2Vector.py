@@ -277,21 +277,24 @@ class scalar2Vector:
 	def doChange(self):
 		#1. 获取目标状态变量信息
 		infoList = self.findTargetVar()
-		#print(infoList)
-		#2. 在合约内部声明结构体——语料库
-		declareStatement = self.makeDeclareStatement(infoList)
-		#print(declareStatement)
-		#3. 插入声明语句
-		nowContent = self.content
-		nowContent = self.insertStruIntoContract(nowContent, declareStatement)
-		#4. 删掉所有的定义并初始化的语句
-		nowContent = self.reDefineTargetVar(nowContent, infoList)
-		#5. 找到所有使用这些变量的语句
-		useInfo = self.findUsedVar()
-		#6. 替换标识符
-		nowContent = self.replaceIdentifier(nowContent, useInfo)
-		#print(nowContent)
-		return nowContent
+		if len(infoList) == 0:
+			return self.content 
+		else:
+			#print(infoList)
+			#2. 在合约内部声明结构体——语料库
+			declareStatement = self.makeDeclareStatement(infoList)
+			#print(declareStatement)
+			#3. 插入声明语句
+			nowContent = self.content
+			nowContent = self.insertStruIntoContract(nowContent, declareStatement)
+			#4. 删掉所有的定义并初始化的语句
+			nowContent = self.reDefineTargetVar(nowContent, infoList)
+			#5. 找到所有使用这些变量的语句
+			useInfo = self.findUsedVar()
+			#6. 替换标识符
+			nowContent = self.replaceIdentifier(nowContent, useInfo)
+			#print(nowContent)
+			return nowContent
 		'''
 		for i in infoList:
 			print(i)

@@ -247,17 +247,20 @@ class local2State:
 		self.NTP = noTouchPure(self.json)
 		#1. find all local varibale
 		localVarList = self.findLocalVar()
-		localVarList = self.NTP.runLocalVar(localVarList)
-		#print(len(localVarList))
-		localVarList = self.filterPara(localVarList)
-		#print(len(localVarList))
-		#2. make declaration statement
-		declareState = self.makeDeclareState(localVarList)
-		#print(self.makeDeclareState(localVarList))
-		#3. Overwrite the original variable declaration statement.
-		nowContent = self.content
-		nowContent = self.overwriteDeclareState(nowContent, localVarList)
-		#print(nowContent)
-		#4. insert declare statement
-		nowContent = self.insertDeclareStatement(nowContent, declareState)
-		return nowContent
+		if len(localVarList) == 0:
+			return self.content
+		else:
+			localVarList = self.NTP.runLocalVar(localVarList)
+			#print(len(localVarList))
+			localVarList = self.filterPara(localVarList)
+			#print(len(localVarList))
+			#2. make declaration statement
+			declareState = self.makeDeclareState(localVarList)
+			#print(self.makeDeclareState(localVarList))
+			#3. Overwrite the original variable declaration statement.
+			nowContent = self.content
+			nowContent = self.overwriteDeclareState(nowContent, localVarList)
+			#print(nowContent)
+			#4. insert declare statement
+			nowContent = self.insertDeclareStatement(nowContent, declareState)
+			return nowContent

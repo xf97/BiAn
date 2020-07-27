@@ -203,12 +203,15 @@ class splitBoolVariable:
 		'''
 		#1. 先找到每个布尔型常量的源代码位置
 		boolList = self.findBoolList()
-		#print(len(boolList))
-		#2. 为每个布尔型常量加后缀
-		nowContent = self.content
-		nowContent = self.strReplace(nowContent, boolList)
-		#print(nowContent)
-		return nowContent
+		if len(boolList) == 0:
+			return self.content
+		else:
+			#print(len(boolList))
+			#2. 为每个布尔型常量加后缀
+			nowContent = self.content
+			nowContent = self.strReplace(nowContent, boolList)
+			#print(nowContent)
+			return nowContent
 		'''
 		#1. 先找到每个布尔型变量的名字和id
 		boolList = self.findBoolList()

@@ -93,24 +93,27 @@ class literal2Exp:
 	def doGenerate(self):
 		#1. find each literal
 		literalList = self.findASTNode("name", "Literal")
-		#2. find int literals in all literals
-		intLiteralList = self.getIntNode(literalList)
-		#3. get literal's  value and position
-		intNodeInfor = list()
-		for node in intLiteralList:
-			(value, startPos, endPos) = self.getNodeInfor(node)
-			intNodeInfor.append([value, startPos, endPos])
-		#print(intNodeInfor)
-		#4. generate corresponding exp
-		for node in intNodeInfor:
-			exp = self.generateExp(node[0])
-			node[0] = exp
-		#5. replace literal
-		nowContent = self.content
-		nowContent = self.strReplace(nowContent, intNodeInfor)
-		'''
-		for node in intNodeInfor:
-			#print(node)
-			nowContent = self.replaceContent(nowContent, node[0], node[1], node[2])
-		'''
-		return nowContent
+		if len(literalList) == 0:
+			return self.content 
+		else:
+			#2. find int literals in all literals
+			intLiteralList = self.getIntNode(literalList)
+			#3. get literal's  value and position
+			intNodeInfor = list()
+			for node in intLiteralList:
+				(value, startPos, endPos) = self.getNodeInfor(node)
+				intNodeInfor.append([value, startPos, endPos])
+			#print(intNodeInfor)
+			#4. generate corresponding exp
+			for node in intNodeInfor:
+				exp = self.generateExp(node[0])
+				node[0] = exp
+			#5. replace literal
+			nowContent = self.content
+			nowContent = self.strReplace(nowContent, intNodeInfor)
+			'''
+			for node in intNodeInfor:
+				#print(node)
+				nowContent = self.replaceContent(nowContent, node[0], node[1], node[2])
+			'''
+			return nowContent

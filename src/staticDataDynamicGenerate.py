@@ -95,58 +95,61 @@ class staticDataDynamicGenerate:
 		literalList = self.NTP.run(literalList)
 		literalList = self.filterString(literalList)
 		literalList = self.filterOperation(literalList)
-		#2. generate each literal's replacement
-		#2.1 declare array to store literal
-		typeList = self.getLiteralType(literalList)
-		#patch
-		intTypeList = self.getIntType()
-		nowContent = self.content
-		insertPosition = self.getContractStartOrEnd(END_FLAG)
-		#2.2 write getter function into contract
-		#print(typeList)
-		for _type in typeList:
-			if _type == ADDRESS_FLAG:
-				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
-			elif _type == STRING_FLAG:
-				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
-			elif _type == INT_FLAG:
-				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
-			elif _type == BOOL_FLAG:
-				(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
-			else:
-				continue	
-		#2.3 insert variable - array
-		#insertPosition = self.getContractStartOrEnd(START_FLAG)
-		arrayList = list()
-		for _type in typeList:
-			if _type == ADDRESS_FLAG:
-				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
-				arrayList.append(array)
-			elif _type == STRING_FLAG:
-				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
-				arrayList.append(array)
-			elif _type == INT_FLAG:
-				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
-				arrayList.append(array)
-			elif _type == BOOL_FLAG:
-				(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
-				arrayList.append(array)
-			else:
-				continue
-		#3. find all literals and replace it 
-		insertList = list()
-		for _dict in literalList:
-			(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
-			if _type == INT_FLAG:
-				callStatement = self.makeCallStatement(arrayList, _type, value)
-				#print(callStatement)
-				callStatement = self.remakeCallStatement(callStatement, startPos, endPos, intTypeList)
-				#print(callStatement)
-			else:
-				callStatement = self.makeCallStatement(arrayList, _type, value)
-			insertList.append([callStatement, startPos, endPos])
-		nowContent = self.strReplace(nowContent, insertList)
-		return nowContent
+		if len(literalList) == 0:
+			return self.content
+		else:
+			#2. generate each literal's replacement
+			#2.1 declare array to store literal
+			typeList = self.getLiteralType(literalList)
+			#patch
+			intTypeList = self.getIntType()
+			nowContent = self.content
+			insertPosition = self.getContractStartOrEnd(END_FLAG)
+			#2.2 write getter function into contract
+			#print(typeList)
+			for _type in typeList:
+				if _type == ADDRESS_FLAG:
+					(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
+				elif _type == STRING_FLAG:
+					(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
+				elif _type == INT_FLAG:
+					(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
+				elif _type == BOOL_FLAG:
+					(nowContent, insertPosition) = self.insertFunc(nowContent, insertPosition, _type)
+				else:
+					continue	
+			#2.3 insert variable - array
+			#insertPosition = self.getContractStartOrEnd(START_FLAG)
+			arrayList = list()
+			for _type in typeList:
+				if _type == ADDRESS_FLAG:
+					(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+					arrayList.append(array)
+				elif _type == STRING_FLAG:
+					(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+					arrayList.append(array)
+				elif _type == INT_FLAG:
+					(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+					arrayList.append(array)
+				elif _type == BOOL_FLAG:
+					(nowContent, insertPosition, array) = self.insertArrayDeclare(nowContent, insertPosition, _type)
+					arrayList.append(array)
+				else:
+					continue
+			#3. find all literals and replace it 
+			insertList = list()
+			for _dict in literalList:
+				(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
+				if _type == INT_FLAG:
+					callStatement = self.makeCallStatement(arrayList, _type, value)
+					#print(callStatement)
+					callStatement = self.remakeCallStatement(callStatement, startPos, endPos, intTypeList)
+					#print(callStatement)
+				else:
+					callStatement = self.makeCallStatement(arrayList, _type, value)
+				insertList.append([callStatement, startPos, endPos])
+			nowContent = self.strReplace(nowContent, insertList)
+			return nowContent
 
 	def remakeCallStatement(self, _state, _startPos, _endPos, _typeList):
 		temp = self.findLiteral(self.json, "name", "VariableDeclaration");

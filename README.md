@@ -7,7 +7,7 @@
 + **Control flow obfuscation**. This aspect will be developed by the project collaborator *ZhangMeng*.
 
 ## Usage
-Enter the following instruction in the terminal (eg., ubuntu os):
+Enter the following instructions in the terminal (eg., ubuntu os):
 ```
 git clone https://github.com/xf97/BiAn
 cd BiAn/src
