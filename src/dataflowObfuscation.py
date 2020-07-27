@@ -97,34 +97,50 @@ class dataflowObfuscation:
 	def run(self):
 		print((("%s") + "Start data flow confusion:" + ("%s")) % (backGreenFrontWhite, end))
 		if self.isActivate("local2State"):
-			self.L2S = local2State(self.solContent, self.json)
-			nowContent = self.L2S.preProcess()
-			self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables, preprocess")
-			self.recompileMiddleContract()
-			nowContent = self.L2S.resetSolAndJson(self.solContent, self.json)
-			nowContent = self.L2S.doChange()
-			self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables")
-			self.recompileMiddleContract()
+			try:
+				self.L2S = local2State(self.solContent, self.json)
+				nowContent = self.L2S.preProcess()
+				self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables, preprocess")
+				self.recompileMiddleContract()
+				nowContent = self.L2S.resetSolAndJson(self.solContent, self.json)
+				nowContent = self.L2S.doChange()
+				self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables")
+				self.recompileMiddleContract()
+			except:
+				#nowContent = solContent
+				print(("%s" + "Convert local variables to state variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("staticDataDynamicGenerate"):
-			self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
-			nowContent = self.SDDG.doGenerate()
-			self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
-			self.recompileMiddleContract()
+			try:
+				self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
+				nowContent = self.SDDG.doGenerate()
+				self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
+				self.recompileMiddleContract()
+			except:
+				print(("%s" + "Dynamically generate static data...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("literal2Exp"):
-			self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
-			nowContent = self.L2E.doGenerate()
-			self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
-			self.recompileMiddleContract()
+			try:
+				self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
+				nowContent = self.L2E.doGenerate()
+				self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
+				self.recompileMiddleContract()
+			except:
+				print(("%s" + "Convert integer literals to arithmetic expressions...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("splitBoolVariable"):
-			self.SBV = splitBoolVariable(self.solContent, self.json)
-			nowContent = self.SBV.doSplit()
-			self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
-			self.recompileMiddleContract()
+			try:
+				self.SBV = splitBoolVariable(self.solContent, self.json)
+				nowContent = self.SBV.doSplit()
+				self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
+				self.recompileMiddleContract()
+			except:
+				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("scalar2Vector"):
-			self.S2V = scalar2Vector(self.solContent, self.json)
-			nowContent = self.S2V.doChange()
-			self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
-			self.recompileMiddleContract()
+			try:
+				self.S2V = scalar2Vector(self.solContent, self.json)
+				nowContent = self.S2V.doChange()
+				self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
+				self.recompileMiddleContract()
+			except:
+				print(("%s" + "Scalar to vector...Exception occurs" + "%s") % (bad, end))
 		'''
 		if self.isActivate("arrayMergeCollapse"):
 			self.AMC = arrayMergeCollapse(self.solContent, self.json)

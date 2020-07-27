@@ -96,17 +96,26 @@ class layoutConfuse:
 	def run(self):
 		print((("%s") + "Start layout confusion:" + ("%s")) % (backGreenFrontWhite, end))
 		if self.isActivate("deleteComment"):
-			self.DC = deleteComment(self.solContent)
-			nowContent = self.DC.doDelete()
+			try:
+				self.DC = deleteComment(self.solContent)
+				nowContent = self.DC.doDelete()
+			except:
+				print(("%s" + "Delete comments...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("changeFormat"):
-			self.CF = changeFormat(nowContent)
-			nowContent = self.CF.doChange()
-			self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
-			self.recompileMiddleContract()
+			try:
+				self.CF = changeFormat(nowContent)
+				nowContent = self.CF.doChange()
+				self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
+				self.recompileMiddleContract()
+			except:
+				print(("%s" + "Disrupt the formatting...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("replaceVarName"):
-			self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
-			nowContent = self.RVN.doReplace()
-			self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
+			try:
+				self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
+				nowContent = self.RVN.doReplace()
+				self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
+			except:
+				print(("%s" + "Replace variable name...Exception occurs" + "%s") % (bad, end))
 		print((("%s") + "Complete layout confusion." + ("%s")) % (backGreenFrontWhite, end))
 		print(("%s" + "Complete layout confusion and data flow confusion! The obfuscation result is stored in file " + ("%s") + "." + ("%s")) % (backBlueFrontWhite, self.outputFileName, end))
 
