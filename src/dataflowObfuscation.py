@@ -159,6 +159,7 @@ class dataflowObfuscation:
 			self.AMC = arrayMergeCollapse(self.solContent, self.json)
 			nowContent = self.AMC.doMerge()
 		'''
+		#print(nowContent)
 		print((("%s") + "Complete data flow confusion." + ("%s")) % (backGreenFrontWhite, end))
 
 

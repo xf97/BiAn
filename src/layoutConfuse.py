@@ -101,6 +101,7 @@ class layoutConfuse:
 			try:
 				self.DC = deleteComment(self.solContent)
 				nowContent = self.DC.doDelete()
+				#print(nowContent)
 			except:	
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
@@ -109,6 +110,7 @@ class layoutConfuse:
 			try:
 				self.CF = changeFormat(nowContent)
 				nowContent = self.CF.doChange()
+				#print(nowContent)
 				self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
 				self.recompileMiddleContract()
 			except:
