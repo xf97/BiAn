@@ -28,7 +28,7 @@ Feature completed:
     4. *Split boolean variables*.
     5. *Scalar to vector*.
 
-The configuration file (*Configuration.json*) is a json file, and users can turn on or off various functions by modifying this file.
+The configuration file (*Configuration.json*) is a json file, and users can turn on or off various features by modifying this file.
 
 The following features' development has been stopped due to current restrictions. Uncompleted features:
 + **Data flow obfuscation**.

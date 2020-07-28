@@ -69,6 +69,8 @@ class staticDataDynamicGenerate:
 		for i in _list:
 			if i["attributes"].get("value") == "" and i["attributes"].get("type").split()[0] == STRING_FLAG:
 				continue
+			elif i["attributes"]["value"] == None and i["attributes"]["hexvalue"] != None and i["attributes"].get("type").split()[0] == STRING_FLAG:
+				continue
 			else:
 				resultList.append(i)
 		return resultList
@@ -214,8 +216,6 @@ class staticDataDynamicGenerate:
 				return item[0]
 		return str()
 
-
-
 	def makeCallStatement(self, _array, _type, _value):
 		flag = self.reMakeType(_type)
 		for state in _array:
@@ -305,6 +305,11 @@ class staticDataDynamicGenerate:
 		valueList = list()
 		for _dict in typeList:
 			try:
+				if _type == STRING_FLAG and _type == _dict["attributes"]["type"].split()[0]:
+					if _dict["attributes"]["value"] == None:
+						valueList.append(_dict["attributes"]["hexvalue"])
+					else:
+						valueList.append(_dict["attributes"]["value"])
 				if _type != INT_FLAG and _type == _dict["attributes"]["type"].split()[0]:
 					valueList.append(_dict["attributes"]["value"])
 				elif _type == INT_FLAG and _type == _dict["attributes"]["type"].split()[0]:
