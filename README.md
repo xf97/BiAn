@@ -52,7 +52,8 @@ The obfuscated contract can still be compiled (no errors or warnings).
 
 Limited by our technical level, the number of currently available tools and test cases, **BiAn** still has the following limitations:
 1. **BiAn** cannot handle the solFile that contains multiple contracts.
-2. **BiAn** may run abnormally when it confuses a contract. We welcome users to submit *bug* issues.
+2. **BiAn** cannot handle contracts that generate warnings at compile time. We use the local compiler (*solc*) to compile a contract. If a warning is generated when compiling the contract, the local compiler (*solc*) does not output the compilation result, which leads to errors in the following obfuscation steps.
+3. **BiAn** may run abnormally when it confuses a contract. We welcome users to submit *bug* issues.
 
 ## Possible use 
 We hope that **BiAn** can play a role in the following aspects:
