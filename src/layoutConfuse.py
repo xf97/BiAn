@@ -16,6 +16,7 @@ from splitFunction import splitFunction
 from changeFormat import changeFormat
 from deleteComment import deleteComment
 import time
+from random import random
 
 
 colors = True # Output should be colored
@@ -90,14 +91,22 @@ class layoutConfuse:
 	def isActivate(self, _name):
 		for _dict in self.featureList:
 			try:
-				return _dict[_name]
+				return _dict[_name][0]
 			except:
 				continue
 		return True
 
+	def getFeatProb(self, _name):
+		for _dict in self.featureList:
+			try:
+				return _dict[_name][1]
+			except:
+				continue
+		return 1
+
 	def run(self):
 		print((("%s") + "Start layout confusion:" + ("%s")) % (backGreenFrontWhite, end))
-		if self.isActivate("deleteComment"):
+		if self.isActivate("deleteComment") and random() < self.getFeatProb("deleteComment"):
 			try:
 				self.DC = deleteComment(self.solContent)
 				nowContent = self.DC.doDelete()
@@ -106,7 +115,7 @@ class layoutConfuse:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Delete comments...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("changeFormat"):
+		if self.isActivate("changeFormat") and random() < self.getFeatProb("changeFormat"):
 			try:
 				self.CF = changeFormat(nowContent)
 				nowContent = self.CF.doChange()
@@ -117,7 +126,7 @@ class layoutConfuse:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Disrupt the formatting...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("replaceVarName"):
+		if self.isActivate("replaceVarName") and random() < self.getFeatProb("replaceVarName"):
 			try:
 				self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
 				nowContent = self.RVN.doReplace()

@@ -18,6 +18,7 @@ from local2State import local2State
 from arrayMergeCollapse import arrayMergeCollapse
 from scalar2Vector import scalar2Vector
 import time
+from random import random
 
 colors = True # Output should be colored
 machine = sys.platform # Detecting the os of current system
@@ -87,19 +88,27 @@ class dataflowObfuscation:
 	def getConfig(self):
 		config = self.getJsonContent(self.configPath)
 		self.featureList = config["activateFunc"]
+		#print(self.featureList)
 
 	def isActivate(self, _name):
 		for _dict in self.featureList:
 			try:
-				return _dict[_name]
+				return _dict[_name][0]
 			except:
 				continue
 		return True
 
+	def getFeatProb(self, _name):
+		for _dict in self.featureList:
+			try:
+				return _dict[_name][1]
+			except:
+				continue
+		return 1
+
 	def run(self):
 		print((("%s") + "Start data flow confusion:" + ("%s")) % (backGreenFrontWhite, end))
-		if self.isActivate("local2State"):
-			#print("1")
+		if self.isActivate("local2State") and random() < self.getFeatProb("local2State"):
 			try:
 				self.L2S = local2State(self.solContent, self.json)
 				nowContent = self.L2S.preProcess()
@@ -114,20 +123,12 @@ class dataflowObfuscation:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert local variables to state variables...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("staticDataDynamicGenerate"):
-			#print("2")
+		if self.isActivate("staticDataDynamicGenerate") and random() < self.getFeatProb("staticDataDynamicGenerate"):
 			self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 			nowContent = self.SDDG.doGenerate()
 			self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
 			self.recompileMiddleContract()
-			'''
-			except:
-				self.solContent = self.getContent(self.filePath)
-				self.json = self.getJsonContent(self.jsonPath)
-				print(("%s" + "Dynamically generate static data...Exception occurs" + "%s") % (bad, end))
-			'''
-		if self.isActivate("literal2Exp"):
-			#print("3")
+		if self.isActivate("literal2Exp") and random() < self.getFeatProb("literal2Exp"):
 			try:
 				self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
 				nowContent = self.L2E.doGenerate()
@@ -137,8 +138,7 @@ class dataflowObfuscation:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert integer literals to arithmetic expressions...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("splitBoolVariable"):
-			#print("4")
+		if self.isActivate("splitBoolVariable") and random() < self.getFeatProb("splitBoolVariable"):
 			try:
 				self.SBV = splitBoolVariable(self.solContent, self.json)
 				nowContent = self.SBV.doSplit()
@@ -148,8 +148,7 @@ class dataflowObfuscation:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("scalar2Vector"):
-			#print("5")
+		if self.isActivate("scalar2Vector") and random() < self.getFeatProb("scalar2Vector"):
 			try:
 				self.S2V = scalar2Vector(self.solContent, self.json)
 				nowContent = self.S2V.doChange()
@@ -159,12 +158,6 @@ class dataflowObfuscation:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Scalar to vector...Exception occurs" + "%s") % (bad, end))
-		'''
-		if self.isActivate("arrayMergeCollapse"):
-			self.AMC = arrayMergeCollapse(self.solContent, self.json)
-			nowContent = self.AMC.doMerge()
-		'''
-		#print(nowContent)
 		print((("%s") + "Complete data flow confusion." + ("%s")) % (backGreenFrontWhite, end))
 
 
