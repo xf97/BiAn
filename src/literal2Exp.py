@@ -90,7 +90,7 @@ class literal2Exp:
 		temp += _oldContent[index : ]
 		return temp
 
-	def doGenerate(self):
+	def doGenerate(self, _prob):
 		#1. find each literal
 		literalList = self.findASTNode("name", "Literal")
 		if len(literalList) == 0:
@@ -106,8 +106,9 @@ class literal2Exp:
 			#print(intNodeInfor)
 			#4. generate corresponding exp
 			for node in intNodeInfor:
-				exp = self.generateExp(node[0])
-				node[0] = exp
+				if random.random() < _prob:
+					exp = self.generateExp(node[0])
+					node[0] = exp
 			#5. replace literal
 			nowContent = self.content
 			nowContent = self.strReplace(nowContent, intNodeInfor)

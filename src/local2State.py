@@ -17,14 +17,14 @@ class local2State:
 		self.NTP = noTouchPure(self.json)
 		self.corpusDict = self.getCorpus()
 
-	def findASTNode(self, _key, _value):
+	def findASTNode(self, _key, _value, _prob):
 		queue = [self.json]
 		result = list()
 		literalList = list()
 		while len(queue) > 0:
 			data = queue.pop()
 			for key in data:
-				if key == _key and  data[key] == _value:
+				if key == _key and  data[key] == _value and random.random() < _prob:
 					result.append(data)
 				elif type(data[key]) == dict:
 					queue.append(data[key])
@@ -34,8 +34,8 @@ class local2State:
 							queue.append(item)
 		return result
 
-	def findLocalVar(self):
-		varList = self.findASTNode("name", "VariableDeclaration")
+	def findLocalVar(self, _prob):
+		varList = self.findASTNode("name", "VariableDeclaration", _prob)
 		localVarList = list()
 		for node in varList:
 			try:
@@ -89,7 +89,7 @@ class local2State:
 		return resultList
 
 	def findSameNameState(self, _node):
-		identifierList = self.findASTNode("name", "Identifier")
+		identifierList = self.findASTNode("name", "Identifier", 1)
 		#print(len(identifierList))
 		resultList = list()
 		for iden in identifierList:
@@ -225,13 +225,13 @@ class local2State:
 		return newContent
 
 	def insertDeclareStatement(self, _content, _state):
-		contractDefine = self.findASTNode("name", "ContractDefinition")
+		contractDefine = self.findASTNode("name", "ContractDefinition", 1)
 		sPos, ePos = self.srcToPos(contractDefine[0]["src"])
 		newContent  = _content[:ePos - 1] + _state + _content[ePos - 1:]
 		return newContent
 
 	def findLocalVar_post(self):
-		varList = self.findASTNode("name", "VariableDeclarationStatement")
+		varList = self.findASTNode("name", "VariableDeclarationStatement", 1)
 		localVarList = list()
 		for node in varList:
 			try:
@@ -243,7 +243,7 @@ class local2State:
 				continue
 		return localVarList
 
-	def doChange(self):
+	def doChange(self, _prob):
 		self.NTP = noTouchPure(self.json)
 		#1. find all local varibale
 		localVarList = self.findLocalVar()

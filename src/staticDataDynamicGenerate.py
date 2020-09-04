@@ -13,7 +13,7 @@ function of the contract.
 key points:
 Solidity is a limited language, as is Ethereum.
 '''
-
+from random import random
 import os
 import json
 import sys
@@ -46,7 +46,7 @@ class staticDataDynamicGenerate:
 		return corpusDict
 
 	def getIntType(self):
-		temp = self.findLiteral(self.json, "name", "VariableDeclaration")
+		temp = self.findLiteral(self.json, "name", "VariableDeclaration", 1)
 		intNode = list()
 		for node in temp:
 			try:
@@ -77,7 +77,7 @@ class staticDataDynamicGenerate:
 
 	def filterOperation(self, _list):
 		resultList = list()
-		operationNode = self.findLiteral(self.json, "name", "BinaryOperation")
+		operationNode = self.findLiteral(self.json, "name", "BinaryOperation", 1)
 		for node in _list:
 			literalSPos = self.listToInt([node["src"].split(":")[0]])
 			literalEPos = self.listToInt(node["src"].split(":"))
@@ -91,9 +91,9 @@ class staticDataDynamicGenerate:
 		return resultList
 
 
-	def doGenerate(self):
+	def doGenerate(self, _prob):
 		#1. find each literal 
-		literalList = self.findLiteral(self.json, "name", "Literal")
+		literalList = self.findLiteral(self.json, "name", "Literal", _prob)
 		literalList = self.NTP.run(literalList)
 		literalList = self.filterString(literalList)
 		literalList = self.filterOperation(literalList)
@@ -158,9 +158,9 @@ class staticDataDynamicGenerate:
 			return nowContent
 
 	def remakeCallStatement(self, _state, _startPos, _endPos, _typeList):
-		temp = self.findLiteral(self.json, "name", "VariableDeclaration");
-		temp.extend(self.findLiteral(self.json, "name", "Assignment"))
-		temp1 = self.findLiteral(self.json, "name", "VariableDeclarationStatement")
+		temp = self.findLiteral(self.json, "name", "VariableDeclaration", 1)
+		temp.extend(self.findLiteral(self.json, "name", "Assignment", 1))
+		temp1 = self.findLiteral(self.json, "name", "VariableDeclarationStatement", 1)
 		for i in temp:
 			sPos = self.listToInt([i["src"].split(":")[0]])
 			ePos = self.listToInt(i["src"].split(":"))
@@ -305,7 +305,7 @@ class staticDataDynamicGenerate:
 		return self.strInsert(_content, intStr, _position - 1), _position + len(intStr), intStr
 
 	def getValue(self, _type):
-		typeList = self.findLiteral(self.json, "name", "Literal")
+		typeList = self.findLiteral(self.json, "name", "Literal", 1)
 		valueList = list()
 		for _dict in typeList:
 			try:
@@ -364,7 +364,7 @@ class staticDataDynamicGenerate:
 		return list(set(temp))
 
 	def getContractStartOrEnd(self, _flag):
-		_list = self.findLiteral(self.json, "name", "ContractDefinition")
+		_list = self.findLiteral(self.json, "name", "ContractDefinition", 1)
 		#contractEnd = list()
 		temp = list()
 		for _dict in _list:
@@ -423,14 +423,14 @@ class staticDataDynamicGenerate:
 		return list(set(typeList))
 
 
-	def findLiteral(self, _json, _key, _value):
+	def findLiteral(self, _json, _key, _value, _prob):
 		queue = [_json]
 		result = list()
 		literalList = list()
 		while len(queue) > 0:
 			data = queue.pop()
 			for key in data:
-				if key == _key and  data[key] == _value:
+				if key == _key and  data[key] == _value and random() < _prob:
 					result.append(data)
 				elif type(data[key]) == dict:
 					queue.append(data[key])

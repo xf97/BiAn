@@ -115,10 +115,10 @@ class layoutConfuse:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Delete comments...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("changeFormat") and random() < self.getFeatProb("changeFormat"):
+		if self.isActivate("changeFormat"):
 			try:
 				self.CF = changeFormat(nowContent)
-				nowContent = self.CF.doChange()
+				nowContent = self.CF.doChange(self.getFeatProb("changeFormat"))
 				#print(nowContent)
 				self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
 				self.recompileMiddleContract()
@@ -126,10 +126,10 @@ class layoutConfuse:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Disrupt the formatting...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("replaceVarName") and random() < self.getFeatProb("replaceVarName"):
+		if self.isActivate("replaceVarName"):
 			try:
 				self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
-				nowContent = self.RVN.doReplace()
+				nowContent = self.RVN.doReplace(self.getFeatProb("replaceVarName"))
 				self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
 			except:
 				self.solContent = self.getContent(self.filePath)

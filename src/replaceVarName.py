@@ -13,6 +13,7 @@ import sys
 import re
 import hashlib
 import time
+from random import random
 
 VAR_FLAG = 1
 IDENTIFIER_FLAG = 2
@@ -81,14 +82,15 @@ class replaceVarName:
 		return result
 
 
-	def doReplace(self):
+	def doReplace(self, _prob):
 		#1. get names of all variables and identifiers
 		nameList = self.getNames(self.json)
 		replacedResult = self.content
 		#2. Replace the name of each variable and identifier with a hash value
 		for name in nameList:
 			if name != None:
-				replacedResult = self.replace1Name(replacedResult, name)
+				if random() < _prob:
+					replacedResult = self.replace1Name(replacedResult, name)
 		#print(replacedResult)
 		#3. return result
 		return replacedResult

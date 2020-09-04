@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 from random import randint
+from random import random
 import json
 from generateExp import generateExp
 
@@ -25,13 +26,13 @@ class splitBoolVariable:
 		#print(corpusDict,"kkkkkkkk")
 		return corpusDict
 
-	def findBoolList(self):
+	def findBoolList(self, _prob):
 		nodeList = self.findASTNode("name", "Literal")
 		#nodeList.extend(self.findASTNode("name", "VariableDeclarationStatement"))
 		resultList = list()
 		for node in nodeList:
 			try:
-				if node["attributes"].get("type") == "bool":
+				if node["attributes"].get("type") == "bool" and random() < _prob:
 					startPos, endPos = self.srcToPos(node["src"])
 					value = node["attributes"].get("value")
 					resultList.append([value, startPos, endPos])
@@ -196,13 +197,13 @@ class splitBoolVariable:
 				+ ") " + ope[randint(0,1)] + " (" + self.generateExp(str(randint(0, RANDOM_LIMIT))) + "))"
 
 
-	def doSplit(self):
+	def doSplit(self, _prob):
 		'''
 		总的思想应该是：找到所有bool常量，
 		在为这些常量的语句最后，添加”与真值与“或”与假值或“的部分。
 		'''
 		#1. 先找到每个布尔型常量的源代码位置
-		boolList = self.findBoolList()
+		boolList = self.findBoolList(_prob)
 		if len(boolList) == 0:
 			return self.content
 		else:

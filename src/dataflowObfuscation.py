@@ -108,14 +108,14 @@ class dataflowObfuscation:
 
 	def run(self):
 		print((("%s") + "Start data flow confusion:" + ("%s")) % (backGreenFrontWhite, end))
-		if self.isActivate("local2State") and random() < self.getFeatProb("local2State"):
+		if self.isActivate("local2State"):
 			try:
 				self.L2S = local2State(self.solContent, self.json)
 				nowContent = self.L2S.preProcess()
 				self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables, preprocess")
 				self.recompileMiddleContract()
 				nowContent = self.L2S.resetSolAndJson(self.solContent, self.json)
-				nowContent = self.L2S.doChange()
+				nowContent = self.L2S.doChange(self.getFeatProb("local2State"))
 				self.writeStrToFile(self.middleContract, nowContent, "Convert local variables to state variables")
 				self.recompileMiddleContract()
 			except:
@@ -123,35 +123,35 @@ class dataflowObfuscation:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert local variables to state variables...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("staticDataDynamicGenerate") and random() < self.getFeatProb("staticDataDynamicGenerate"):
+		if self.isActivate("staticDataDynamicGenerate"):
 			self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
-			nowContent = self.SDDG.doGenerate()
+			nowContent = self.SDDG.doGenerate(self.getFeatProb("staticDataDynamicGenerate"))
 			self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
 			self.recompileMiddleContract()
-		if self.isActivate("literal2Exp") and random() < self.getFeatProb("literal2Exp"):
+		if self.isActivate("literal2Exp"):
 			try:
 				self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
-				nowContent = self.L2E.doGenerate()
+				nowContent = self.L2E.doGenerate(self.getFeatProb("literal2Exp"))
 				self.writeStrToFile(self.middleContract, nowContent, "Convert integer literals to arithmetic expressions")
 				self.recompileMiddleContract()
 			except:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert integer literals to arithmetic expressions...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("splitBoolVariable") and random() < self.getFeatProb("splitBoolVariable"):
+		if self.isActivate("splitBoolVariable"):
 			try:
 				self.SBV = splitBoolVariable(self.solContent, self.json)
-				nowContent = self.SBV.doSplit()
+				nowContent = self.SBV.doSplit(self.getFeatProb("splitBoolVariable"))
 				self.writeStrToFile(self.middleContract, nowContent, "Split boolean variables")
 				self.recompileMiddleContract()
 			except:
 				self.solContent = self.getContent(self.filePath)
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
-		if self.isActivate("scalar2Vector") and random() < self.getFeatProb("scalar2Vector"):
+		if self.isActivate("scalar2Vector"):
 			try:
 				self.S2V = scalar2Vector(self.solContent, self.json)
-				nowContent = self.S2V.doChange()
+				nowContent = self.S2V.doChange(self.getFeatProb("scalar2Vector"))
 				self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
 				self.recompileMiddleContract()
 			except:

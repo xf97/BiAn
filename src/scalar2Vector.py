@@ -3,6 +3,7 @@
 
 import json
 import copy
+from random import random
 
 BOOL_FLAG = "bool"
 INT_FLAG = "int"
@@ -20,14 +21,14 @@ class scalar2Vector:
 		self.corpusDict = self.getCorpus()
 		self.mapping = dict()
 
-	def findASTNode(self, _key, _value):
+	def findASTNode(self, _key, _value, _prob):
 		queue = [self.json]
 		result = list()
 		literalList = list()
 		while len(queue) > 0:
 			data = queue.pop()
 			for key in data:
-				if key == _key and  data[key] == _value:
+				if key == _key and  data[key] == _value and random() < _prob:
 					result.append(data)
 				elif type(data[key]) == dict:
 					queue.append(data[key])
@@ -105,8 +106,8 @@ class scalar2Vector:
 		elif _type == BYTES_FLAG:
 			return "bytes(\"\")"
 
-	def findTargetVar(self):
-		nodeList = self.findASTNode("name", "VariableDeclaration")
+	def findTargetVar(self, _prob):
+		nodeList = self.findASTNode("name", "VariableDeclaration", _prob)
 		# 过滤非状态变量
 		stateVarList = self.findStateVar(nodeList)
 		# 过滤非目标类型变量
@@ -270,13 +271,10 @@ class scalar2Vector:
 			replacedInfo.append([newName, node[1], node[2]])
 		return self.strReplace(_content, replacedInfo)
 
-
-
-
 	#node info: name type id (sPos, ePos)
-	def doChange(self):
+	def doChange(self, _prob):
 		#1. 获取目标状态变量信息
-		infoList = self.findTargetVar()
+		infoList = self.findTargetVar(_prob)
 		if len(infoList) == 0:
 			return self.content 
 		else:

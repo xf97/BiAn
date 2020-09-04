@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import re
+from random import random
 
 class changeFormat:
 	def __init__(self, _solContent):
@@ -19,12 +20,14 @@ class changeFormat:
 		pattern = r"(\s){1,}"
 		return re.sub(pattern, " ", _content)
 
-	def doChange(self):
+	def doChange(self, _prob):
 		nowContent = self.content
 		#1. delete \t
-		nowContent = self.reSubT(nowContent)
+		if random() < _prob:
+			nowContent = self.reSubT(nowContent)
 		#2. delete \n
 		nowContent = self.reSubN(nowContent)
 		#3. delete \s
-		nowContent = self.reSubS(nowContent)
+		if random() < _prob:
+			nowContent = self.reSubS(nowContent)
 		return nowContent
