@@ -138,10 +138,13 @@ class staticDataDynamicGenerate:
 					arrayList.append(array)
 				else:
 					continue
+			#print("wonanshou")
 			#3. find all literals and replace it 
 			insertList = list()
+			#print(len(literalList))
 			for _dict in literalList:
 				(_type, value, startPos, endPos) = self.getLiteralInfor(_dict)
+				#print(_type, value, startPos, endPos)
 				if _type == INT_FLAG:
 					callStatement = self.makeCallStatement(arrayList, _type, value)
 					#print(callStatement, "****")
@@ -150,6 +153,7 @@ class staticDataDynamicGenerate:
 				else:
 					callStatement = self.makeCallStatement(arrayList, _type, value)
 				insertList.append([callStatement, startPos, endPos])
+			#print("niyenanshou")
 			nowContent = self.strReplace(nowContent, insertList)
 			return nowContent
 

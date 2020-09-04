@@ -99,6 +99,7 @@ class dataflowObfuscation:
 	def run(self):
 		print((("%s") + "Start data flow confusion:" + ("%s")) % (backGreenFrontWhite, end))
 		if self.isActivate("local2State"):
+			#print("1")
 			try:
 				self.L2S = local2State(self.solContent, self.json)
 				nowContent = self.L2S.preProcess()
@@ -114,6 +115,7 @@ class dataflowObfuscation:
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert local variables to state variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("staticDataDynamicGenerate"):
+			#print("2")
 			self.SDDG = staticDataDynamicGenerate(self.solContent, self.json) #SDDG is a class which is used to convert static literal to dynamic generated data
 			nowContent = self.SDDG.doGenerate()
 			self.writeStrToFile(self.middleContract, nowContent, "Dynamically generate static data")
@@ -125,6 +127,7 @@ class dataflowObfuscation:
 				print(("%s" + "Dynamically generate static data...Exception occurs" + "%s") % (bad, end))
 			'''
 		if self.isActivate("literal2Exp"):
+			#print("3")
 			try:
 				self.L2E = literal2Exp(self.solContent, self.json) #L2E is a class which is used to convert integer literal to arithmetic expressions
 				nowContent = self.L2E.doGenerate()
@@ -135,6 +138,7 @@ class dataflowObfuscation:
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Convert integer literals to arithmetic expressions...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("splitBoolVariable"):
+			#print("4")
 			try:
 				self.SBV = splitBoolVariable(self.solContent, self.json)
 				nowContent = self.SBV.doSplit()
@@ -145,6 +149,7 @@ class dataflowObfuscation:
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("scalar2Vector"):
+			#print("5")
 			try:
 				self.S2V = scalar2Vector(self.solContent, self.json)
 				nowContent = self.S2V.doChange()
