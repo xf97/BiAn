@@ -1,11 +1,11 @@
 {
   "activateFunc": [
-  		{"local2State": [false, 0.7]},
+  		{"local2State": [false, 1]},
   		{"staticDataDynamicGenerate": [true,0.7]},
   		{"literal2Exp": [true, 0.7]},
   		{"splitBoolVariable": [true, 0.7]},
-		{"arrayMergeCollapse": [false, 0.7]},
-	 	{"scalar2Vector": [true, 0.7]},
+		{"arrayMergeCollapse": [true, 0.7]},
+	 	{"scalar2Vector": [true, 1]}, 
   		{"replaceVarName": [true, 0.7]},
   		{"changeFormat": [true, 0.7]},
   		{"deleteComment": [true, 0.7]}

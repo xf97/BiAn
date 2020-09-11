@@ -155,7 +155,7 @@ class scalar2Vector:
 		return _oldContent[:_position] + _insertContent + _oldContent[_position:]
 
 	def insertStruIntoContract(self, _content, _str):
-		sPos, ePos = self.srcToPos(self.findASTNode("name", "ContractDefinition")[0]["src"])
+		sPos, ePos = self.srcToPos(self.findASTNode("name", "ContractDefinition", self.prob)[0]["src"])
 		return self.strInsert(_content, _str, ePos - 1)
 
 	def reDefineTargetVar(self, _content, _list):
@@ -193,8 +193,7 @@ class scalar2Vector:
 		return infoList
 
 	def findUsedVar(self):
-		#print(self.mapping)
-		nodeList = self.findASTNode("name", "Identifier")
+		nodeList = self.findASTNode("name", "Identifier", self.prob)
 		#从所有标识符中挑选目标标识符，记录id和起始终止位置
 		nodeList = self.findTargetIden(nodeList)
 		nodeInfoList = self.getIdenInfo(nodeList)
@@ -273,8 +272,9 @@ class scalar2Vector:
 
 	#node info: name type id (sPos, ePos)
 	def doChange(self, _prob):
+		self.prob = _prob
 		#1. 获取目标状态变量信息
-		infoList = self.findTargetVar(_prob)
+		infoList = self.findTargetVar(self.prob)
 		if len(infoList) == 0:
 			return self.content 
 		else:

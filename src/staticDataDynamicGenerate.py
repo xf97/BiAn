@@ -157,6 +157,10 @@ class staticDataDynamicGenerate:
 			nowContent = self.strReplace(nowContent, insertList)
 			return nowContent
 
+    #在函数调用中充当参数的常量不转换
+	def noTouchFunctionCall(self, _startPos, _endPos):
+		pass
+
 	def remakeCallStatement(self, _state, _startPos, _endPos, _typeList):
 		temp = self.findLiteral(self.json, "name", "VariableDeclaration", 1)
 		temp.extend(self.findLiteral(self.json, "name", "Assignment", 1))
@@ -165,29 +169,25 @@ class staticDataDynamicGenerate:
 			sPos = self.listToInt([i["src"].split(":")[0]])
 			ePos = self.listToInt(i["src"].split(":"))
 			if sPos <= _startPos and ePos >= _endPos:
-				_type = i["attributes"]["type"]
-				return " " + _type + "(" + _state.lstrip() + ")"
+				_type = i["attributes"]["type"].split()[0]
+				if _type.find("[]") == len(_type) - 2:
+					return " " + _type[:-2] + "(" + _state.lstrip() + ")" #-2为了截取掉最后的[]
+				else:
+					return " " + _type + "(" + _state.lstrip() + ")"
 			else:
 				continue
 		for i in temp1:
 			sPos = self.listToInt([i["src"].split(":")[0]])
 			ePos = self.listToInt(i["src"].split(":"))
 			if sPos <= _startPos and ePos >= _endPos:
-				_type = i["children"][0]["attributes"]["type"]
-				return " " + _type + "(" + _state.lstrip() + ")"
+				_type = i["children"][0]["attributes"]["type"].split()[0]
+				if _type.find("[]") == len(_type) - 2:
+					return " " + _type[:-2] + "(" + _state.lstrip() + ")" #-2为了截取掉最后的[]
+				else:
+					return " " + _type + "(" + _state.lstrip() + ")"
 			else:
 				continue
 		return _state
-
-				#return " " + _type + "(" + _state.lstrip() + ")"
-
-
-
-
-	'''
-	def strReplace(self, _oldContent, _insertContent, _startPos, _endPos):
-		return _oldContent[startPos:] + _insertContent + _oldContent[:endPos]
-	'''
 
 	def strReplace(self, _oldContent, _list):
 		temp = str()

@@ -106,6 +106,7 @@ class layoutConfuse:
 
 	def run(self):
 		print((("%s") + "Start layout confusion:" + ("%s")) % (backGreenFrontWhite, end))
+		nowContent = str()
 		if self.isActivate("deleteComment") and random() < self.getFeatProb("deleteComment"):
 			try:
 				self.DC = deleteComment(self.solContent)
@@ -119,7 +120,6 @@ class layoutConfuse:
 			try:
 				self.CF = changeFormat(nowContent)
 				nowContent = self.CF.doChange(self.getFeatProb("changeFormat"))
-				#print(nowContent)
 				self.writeStrToFile("temp.sol", nowContent, "Delete comments, disrupt the formatting")
 				self.recompileMiddleContract()
 			except:

@@ -150,8 +150,12 @@ class dataflowObfuscation:
 				print(("%s" + "Split boolean variables...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("scalar2Vector"):
 			try:
+				#该功能的概率只能设置为0或1
 				self.S2V = scalar2Vector(self.solContent, self.json)
-				nowContent = self.S2V.doChange(self.getFeatProb("scalar2Vector"))
+				if self.getFeatProb("scalar2Vector") != 0:
+					nowContent = self.S2V.doChange(1)
+				else:
+					nowContent = self.S2V.doChange(0)
 				self.writeStrToFile(self.middleContract, nowContent, "Scalar to vector")
 				self.recompileMiddleContract()
 			except:
