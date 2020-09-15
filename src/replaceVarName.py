@@ -7,6 +7,12 @@ is used to replace variable names with less readable
 strings (currently hash values).
 '''
 
+'''
+2020/9/15更新：
+收窄替换名字的范围，为避免替换Solidity关键字的
+因为我们进行识别，只替换合约名、函数名、变量名和标识符的名称
+'''
+
 import os
 import json
 import sys
@@ -27,14 +33,13 @@ class replaceVarName:
 		#print(type(self.json))
 
 	def getNames(self, _json):
-		#dictList = list()
-		#dictList.append(_json)
-		varName = set(self._getName(_json, "name", "VariableDeclaration", VAR_FLAG))
-		idenName = set(self._getName(_json, "name", "Identifier", IDENTIFIER_FLAG))
-		funcName = set(self._getName(_json, "name", "FunctionDefinition", FUNC_FLAG))
-		contractName = set(self._getName(_json, "exportedSymbols", "", CONTRACT_FLAG))
-		#print(idenName)
-		return varName | idenName | funcName | contractName
+		varName = set(self._getName(_json, "name", "VariableDeclaration"))
+		funcName = set(self._getName(_json, "name", "FunctionDefinition"))
+		modifierName = set(self._getName(_json, "name", "ModifierDefinition"))
+		contractName = set(self._getName(_json, "name", "ContractDefinition"))
+		resultSet = (varName | funcName | modifierName | contractName)	#并集自动去重
+		resultSet.discard("") #去空，此处可能存在隐患
+		return resultSet
 
 	def getDictName(self, _dict, _flag):
 		for key in _dict:
@@ -56,6 +61,7 @@ class replaceVarName:
 			elif _flag == CONTRACT_FLAG and key == "exportedSymbols":
 				return _dict[key].keys()
 
+	'''
 	def _getName(self, _json, _key, _value, _flag):
 		queue = [_json]
 		result = list()
@@ -80,18 +86,42 @@ class replaceVarName:
 						if type(item) == dict:
 							queue.append(item)
 		return result
+	'''
+
+	def _getName(self, _json, _key, _value):
+		queue = [_json]
+		result = list()
+		literalList = list()
+		while len(queue) > 0:
+			data = queue.pop()
+			for key in data:
+				if key == _key and data[key] == _value:
+					#result.append(data)
+					#我们需要的变量名一般都是目标字典下的["attributes"]["name"]
+					if data["attributes"].get("name") != None:
+						result.append(data["attributes"]["name"])
+				elif type(data[key]) == dict:
+					queue.append(data[key])
+				elif type(data[key]) == list:
+					for item in data[key]:
+						if type(item) == dict:
+							queue.append(item)
+		return result
 
 
 	def doReplace(self, _prob):
 		#1. get names of all variables and identifiers
 		nameList = self.getNames(self.json)
+		'''
+		print(nameList)
+		print("*" * 40)
+		'''
 		replacedResult = self.content
 		#2. Replace the name of each variable and identifier with a hash value
 		for name in nameList:
 			if name != None:
 				if random() < _prob:
 					replacedResult = self.replace1Name(replacedResult, name)
-		#print(replacedResult)
 		#3. return result
 		return replacedResult
 

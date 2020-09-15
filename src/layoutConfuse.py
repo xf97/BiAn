@@ -127,14 +127,14 @@ class layoutConfuse:
 				self.json = self.getJsonContent(self.jsonPath)
 				print(("%s" + "Disrupt the formatting...Exception occurs" + "%s") % (bad, end))
 		if self.isActivate("replaceVarName"):
-			try:
-				self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
-				nowContent = self.RVN.doReplace(self.getFeatProb("replaceVarName"))
-				self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
-			except:
-				self.solContent = self.getContent(self.filePath)
-				self.json = self.getJsonContent(self.jsonPath)
-				print(("%s" + "Replace variable name...Exception occurs" + "%s") % (bad, end))
+			#try:
+			self.RVN = replaceVarName(self.solContent, self.json) # RVN is the class that performs "Replace Variable Name" operation
+			nowContent = self.RVN.doReplace(self.getFeatProb("replaceVarName"))
+			self.writeStrToFile(self.outputFileName, nowContent, "Replace variable name")
+			#except:
+			#	self.solContent = self.getContent(self.filePath)
+			#	self.json = self.getJsonContent(self.jsonPath)
+			#	print(("%s" + "Replace variable name...Exception occurs" + "%s") % (bad, end))
 		print((("%s") + "Complete layout confusion." + ("%s")) % (backGreenFrontWhite, end))
 		print(("%s" + "Complete layout confusion and data flow confusion! The obfuscation result is stored in file " + ("%s") + "." + ("%s")) % (backBlueFrontWhite, self.outputFileName, end))
 
