@@ -1,0 +1,209 @@
+{
+	"attributes" : 
+	{
+		"absolutePath" : "simple_suicide.sol",
+		"exportedSymbols" : 
+		{
+			"SimpleSuicide" : 
+			[
+				11
+			]
+		}
+	},
+	"children" : 
+	[
+		{
+			"attributes" : 
+			{
+				"literals" : 
+				[
+					"solidity",
+					"^",
+					"0.4",
+					".0"
+				]
+			},
+			"id" : 1,
+			"name" : "PragmaDirective",
+			"src" : "214:23:0"
+		},
+		{
+			"attributes" : 
+			{
+				"baseContracts" : 
+				[
+					null
+				],
+				"contractDependencies" : 
+				[
+					null
+				],
+				"contractKind" : "contract",
+				"documentation" : null,
+				"fullyImplemented" : true,
+				"linearizedBaseContracts" : 
+				[
+					11
+				],
+				"name" : "SimpleSuicide",
+				"scope" : 12
+			},
+			"children" : 
+			[
+				{
+					"attributes" : 
+					{
+						"constant" : false,
+						"documentation" : null,
+						"implemented" : true,
+						"isConstructor" : false,
+						"modifiers" : 
+						[
+							null
+						],
+						"name" : "sudicideAnyone",
+						"payable" : false,
+						"scope" : 11,
+						"stateMutability" : "nonpayable",
+						"superFunction" : null,
+						"visibility" : "external"
+					},
+					"children" : 
+					[
+						{
+							"attributes" : 
+							{
+								"parameters" : 
+								[
+									null
+								]
+							},
+							"children" : [],
+							"id" : 2,
+							"name" : "ParameterList",
+							"src" : "324:2:0"
+						},
+						{
+							"attributes" : 
+							{
+								"parameters" : 
+								[
+									null
+								]
+							},
+							"children" : [],
+							"id" : 3,
+							"name" : "ParameterList",
+							"src" : "336:0:0"
+						},
+						{
+							"children" : 
+							[
+								{
+									"children" : 
+									[
+										{
+											"attributes" : 
+											{
+												"argumentTypes" : null,
+												"isConstant" : false,
+												"isLValue" : false,
+												"isPure" : false,
+												"isStructConstructorCall" : false,
+												"lValueRequested" : false,
+												"names" : 
+												[
+													null
+												],
+												"type" : "tuple()",
+												"type_conversion" : false
+											},
+											"children" : 
+											[
+												{
+													"attributes" : 
+													{
+														"argumentTypes" : 
+														[
+															{
+																"typeIdentifier" : "t_address",
+																"typeString" : "address"
+															}
+														],
+														"overloadedDeclarations" : 
+														[
+															null
+														],
+														"referencedDeclaration" : 34,
+														"type" : "function (address)",
+														"value" : "selfdestruct"
+													},
+													"id" : 4,
+													"name" : "Identifier",
+													"src" : "342:12:0"
+												},
+												{
+													"attributes" : 
+													{
+														"argumentTypes" : null,
+														"isConstant" : false,
+														"isLValue" : false,
+														"isPure" : false,
+														"lValueRequested" : false,
+														"member_name" : "sender",
+														"referencedDeclaration" : null,
+														"type" : "address"
+													},
+													"children" : 
+													[
+														{
+															"attributes" : 
+															{
+																"argumentTypes" : null,
+																"overloadedDeclarations" : 
+																[
+																	null
+																],
+																"referencedDeclaration" : 26,
+																"type" : "msg",
+																"value" : "msg"
+															},
+															"id" : 5,
+															"name" : "Identifier",
+															"src" : "355:3:0"
+														}
+													],
+													"id" : 6,
+													"name" : "MemberAccess",
+													"src" : "355:10:0"
+												}
+											],
+											"id" : 7,
+											"name" : "FunctionCall",
+											"src" : "342:24:0"
+										}
+									],
+									"id" : 8,
+									"name" : "ExpressionStatement",
+									"src" : "342:24:0"
+								}
+							],
+							"id" : 9,
+							"name" : "Block",
+							"src" : "336:35:0"
+						}
+					],
+					"id" : 10,
+					"name" : "FunctionDefinition",
+					"src" : "301:70:0"
+				}
+			],
+			"id" : 11,
+			"name" : "ContractDefinition",
+			"src" : "239:135:0"
+		}
+	],
+	"id" : 12,
+	"name" : "SourceUnit",
+	"src" : "214:161:0"
+}

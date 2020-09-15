@@ -1,13 +1,13 @@
 {
   "activateFunc": [
   		{"local2State": [false, 1]},
-  		{"staticDataDynamicGenerate": [true,0.7]},
-  		{"literal2Exp": [true, 0.7]},
-  		{"splitBoolVariable": [true, 0.7]},
-		{"arrayMergeCollapse": [true, 0.7]},
+  		{"staticDataDynamicGenerate": [true, 1]},
+  		{"literal2Exp": [true, 1]},
+  		{"splitBoolVariable": [true, 1]},
+		{"arrayMergeCollapse": [true, 1]},
 	 	{"scalar2Vector": [true, 1]}, 
-  		{"replaceVarName": [true, 0.7]},
-  		{"changeFormat": [true, 0.7]},
-  		{"deleteComment": [true, 0.7]}
+  		{"replaceVarName": [true, 1]},
+  		{"changeFormat": [true, 1]},
+  		{"deleteComment": [true, 1]}
   ]
 }
