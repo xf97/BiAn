@@ -9,8 +9,16 @@ strings (currently hash values).
 
 '''
 2020/9/15更新：
-收窄替换名字的范围，为避免替换Solidity关键字的
+收窄替换名字的范围，为避免替换Solidity关键字
 因为我们进行识别，只替换合约名、函数名、变量名和标识符的名称
+2020/9/16更新：
+bug重现条件：
+１．用户自定义变量与Solidity全局变量重名
+２．用户自定义变量与重名的Solidity全局变量同时出现在合约中
+导致bug:
+Solidity全局bug被重命名
+解决办法：
+不替换Solidity全局变量的变量名
 '''
 
 import os
@@ -21,10 +29,18 @@ import hashlib
 import time
 from random import random
 
+'''
 VAR_FLAG = 1
 IDENTIFIER_FLAG = 2
 FUNC_FLAG = 3
 CONTRACT_FLAG = 4
+'''
+
+#不替换变量名的全局变量
+BLOCK_FLAG = "block"
+MSG_FLAG = "msg"
+TX_FLAG = "tx"
+ABI_FLAG = "abi"
 
 class replaceVarName:
 	def __init__(self, _solContent, _jsonContent):
@@ -41,6 +57,7 @@ class replaceVarName:
 		resultSet.discard("") #去空，此处可能存在隐患
 		return resultSet
 
+	'''
 	def getDictName(self, _dict, _flag):
 		for key in _dict:
 			if key == "attributes" and _flag == VAR_FLAG:
@@ -60,6 +77,7 @@ class replaceVarName:
 			     return _dict[key].get("name")
 			elif _flag == CONTRACT_FLAG and key == "exportedSymbols":
 				return _dict[key].keys()
+	'''
 
 	'''
 	def _getName(self, _json, _key, _value, _flag):
@@ -125,8 +143,20 @@ class replaceVarName:
 		#3. return result
 		return replacedResult
 
+	#(?|X)零宽度负先行断言
+	#匹配包含_str但不在右侧包含(.)的语句
 	def makeRe(self, _str):
-		return "(\\b)" + _str + "(\\b)"
+		basePattern = "(\\b)" + _str + "(\\b)"
+		if BLOCK_FLAG == _str:
+			return basePattern + "(?!(\\.))"
+		elif MSG_FLAG == _str:
+			return basePattern + "(?!(\\.))"
+		elif ABI_FLAG == _str:
+			return basePattern + "(?!(\\.))"
+		elif TX_FLAG == _str:
+			return basePattern + "(?!(\\.))"
+		else:
+			return basePattern
 
 
 	'''
